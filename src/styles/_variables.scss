@@ -1,0 +1,46 @@
+// ============================================================
+//  Дизайн-токены портфолио: мягкая нейтральная серая палитра
+// ============================================================
+
+// — Цвета —
+$color-white: #ffffff;
+$color-cream: #fbfbfc; // основной фон страницы (почти белый, холодный)
+$color-beige: #f0f1f3; // светло-серый фон панелей
+$color-sand-soft: #eceef0; // мягкий светло-серый (фон)
+$color-sand: #dcdfe3; // серый акцент
+$color-taupe: #c2c7cd; // более тёмный серый — для hover/границ
+
+// — Текст —
+$color-text: #3f4145; // тёмно-серый, не чёрный
+$color-text-muted: #7c8086; // приглушённый серый для подписей
+$color-text-soft: #a9adb3; // самый бледный (метаданные)
+$color-accent-text: #5f636a; // серый акцент для текста/иконок
+$color-accent-text-strong: #45484d; // насыщенный серый (текст на кнопках)
+
+// — Границы и тени —
+$color-border: #e6e8ea;
+$color-border-soft: #eef0f1;
+$shadow-card: 0 6px 22px rgba(60, 64, 67, 0.08);
+$shadow-card-hover: 0 12px 30px rgba(60, 64, 67, 0.14);
+$shadow-panel: 0 4px 18px rgba(60, 64, 67, 0.06);
+
+// — Скругления —
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-pill: 999px;
+
+// — Типографика —
+$font-base: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+// — Раскладка —
+$sidebar-width: 320px;
+$content-max: 1024px;
+$gap: 24px;
+
+// — Брейкпоинты —
+$bp-tablet: 900px;
+$bp-mobile: 600px;
+
+// — Переходы —
+$transition: 0.25s ease;
