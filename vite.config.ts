@@ -2,7 +2,9 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-export default defineConfig({
+// Прод-сборка публикуется на GitHub Pages по адресу /katya/
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/katya/' : '/',
   plugins: [vue()],
   resolve: {
     alias: {
@@ -16,4 +18,4 @@ export default defineConfig({
       },
     },
   },
-})
+}))

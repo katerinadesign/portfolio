@@ -6,6 +6,8 @@ const skills = ['2 года опыта', 'Figma', 'Adaptive Design', 'B2B', 'B2C
 
 /** Внешняя ссылка на Telegram. */
 const telegramUrl = 'https://t.me/username'
+
+const baseUrl = import.meta.env.BASE_URL
 </script>
 
 <template>
@@ -48,7 +50,7 @@ const telegramUrl = 'https://t.me/username'
       </section>
 
       <!-- CV -->
-      <a class="sidebar__cv" href="/cv.pdf" download>
+      <a class="sidebar__cv" :href="`${baseUrl}cv.pdf`" download>
         Скачать CV
       </a>
     </div>

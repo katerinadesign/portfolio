@@ -5,12 +5,14 @@ import type { Project } from '@/types/project'
  * Реальные проекты добавляются сюда же — структура задаётся типом `Project`.
  * Изображения лежат в `public/images` (можно заменить на реальные ссылки).
  */
+const img = (name: string) => `${import.meta.env.BASE_URL}images/${name}`
+
 export const projects: Project[] = [
   {
     slug: 'bloom-banking',
     title: 'Bloom Banking',
     summary: 'Мобильный банк с бережным онбордингом и понятной аналитикой расходов.',
-    cover: '/images/bloom-cover.svg',
+    cover: img('bloom-cover.svg'),
     coverAlt: 'Экраны мобильного банковского приложения Bloom',
     year: '2025',
     role: 'Product Designer',
@@ -22,7 +24,7 @@ export const projects: Project[] = [
     blocks: [
       {
         id: 'discovery',
-        image: '/images/bloom-01.svg',
+        image: img('bloom-01.svg'),
         imageAlt: 'Карта пользовательских сценариев Bloom',
         title: 'Исследование',
         text: 'Начали с интервью и карты сценариев: пользователям было тяжело понимать, куда уходят деньги. Мы упростили навигацию до трёх ключевых разделов и убрали лишние состояния.',
@@ -30,7 +32,7 @@ export const projects: Project[] = [
       },
       {
         id: 'system',
-        image: '/images/bloom-02.svg',
+        image: img('bloom-02.svg'),
         imageAlt: 'UI-кит и компоненты дизайн-системы Bloom',
         title: 'Дизайн-система',
         text: 'Собрали лёгкую дизайн-систему в Figma: токены цвета, типографика и переиспользуемые компоненты. Это ускорило работу с разработкой и сохранило единый визуальный язык.',
@@ -38,7 +40,7 @@ export const projects: Project[] = [
       },
       {
         id: 'result',
-        image: '/images/bloom-03.svg',
+        image: img('bloom-03.svg'),
         imageAlt: 'Финальные экраны аналитики расходов Bloom',
         title: 'Результат',
         text: 'Аналитика расходов стала нагляднее за счёт мягких категорийных цветов и спокойных графиков. После редизайна доля пользователей, открывающих раздел аналитики, выросла.',
@@ -50,7 +52,7 @@ export const projects: Project[] = [
     slug: 'atlas-crm',
     title: 'Atlas CRM',
     summary: 'B2B-платформа для отделов продаж: воронки, задачи и командная аналитика.',
-    cover: '/images/atlas-cover.svg',
+    cover: img('atlas-cover.svg'),
     coverAlt: 'Дашборд B2B CRM-системы Atlas',
     year: '2024',
     role: 'UX/UI Designer',
@@ -62,7 +64,7 @@ export const projects: Project[] = [
     blocks: [
       {
         id: 'audit',
-        image: '/images/atlas-01.svg',
+        image: img('atlas-01.svg'),
         imageAlt: 'Аудит существующих интерфейсов Atlas',
         title: 'Аудит',
         text: 'Провели аудит текущего продукта и нашли перегруженные таблицы и непоследовательные состояния. Приоритизировали задачи вместе с командой и заказчиком.',
@@ -70,7 +72,7 @@ export const projects: Project[] = [
       },
       {
         id: 'dashboard',
-        image: '/images/atlas-02.svg',
+        image: img('atlas-02.svg'),
         imageAlt: 'Новый дашборд с воронками продаж',
         title: 'Дашборд',
         text: 'Спроектировали спокойный дашборд с акцентом на ключевые метрики. Плотность данных сохранили, но добавили воздух и понятную иерархию.',
@@ -82,7 +84,7 @@ export const projects: Project[] = [
     slug: 'petal-shop',
     title: 'Petal Shop',
     summary: 'Онлайн-магазин цветов с нежной подачей товара и быстрым оформлением заказа.',
-    cover: '/images/petal-cover.svg',
+    cover: img('petal-cover.svg'),
     coverAlt: 'Каталог онлайн-магазина цветов Petal',
     year: '2025',
     role: 'Product Designer',
@@ -94,7 +96,7 @@ export const projects: Project[] = [
     blocks: [
       {
         id: 'catalog',
-        image: '/images/petal-01.svg',
+        image: img('petal-01.svg'),
         imageAlt: 'Адаптивный каталог магазина цветов',
         title: 'Каталог',
         text: 'Каталог построен на адаптивной сетке: от четырёх колонок на десктопе до одной на мобильном. Крупные фотографии и мягкие карточки делают акцент на товаре.',
@@ -102,7 +104,7 @@ export const projects: Project[] = [
       },
       {
         id: 'checkout',
-        image: '/images/petal-02.svg',
+        image: img('petal-02.svg'),
         imageAlt: 'Экран оформления заказа Petal',
         title: 'Оформление заказа',
         text: 'Сократили оформление заказа до одного экрана с понятными шагами. Убрали визуальный шум и оставили только необходимое.',
@@ -114,7 +116,7 @@ export const projects: Project[] = [
     slug: 'calm-tracker',
     title: 'Calm Tracker',
     summary: 'Трекер привычек и настроения с тёплой визуализацией прогресса.',
-    cover: '/images/calm-cover.svg',
+    cover: img('calm-cover.svg'),
     coverAlt: 'Экраны приложения-трекера привычек Calm',
     year: '2024',
     role: 'UX/UI Designer',
@@ -126,7 +128,7 @@ export const projects: Project[] = [
     blocks: [
       {
         id: 'concept',
-        image: '/images/calm-01.svg',
+        image: img('calm-01.svg'),
         imageAlt: 'Концепт визуализации привычек Calm',
         title: 'Концепция',
         text: 'Хотелось уйти от давящих «стриков» и чувства вины. Прогресс показывается мягко — через цветение и пастельные состояния, а не через красные предупреждения.',
@@ -134,7 +136,7 @@ export const projects: Project[] = [
       },
       {
         id: 'flow',
-        image: '/images/calm-02.svg',
+        image: img('calm-02.svg'),
         imageAlt: 'Пользовательский флоу отметки привычки',
         title: 'Сценарий',
         text: 'Отметить привычку можно в один тап. Микровзаимодействия дают приятную обратную связь и поддерживают спокойный тон продукта.',
