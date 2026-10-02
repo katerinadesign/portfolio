@@ -3,9 +3,9 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 
-// Прод-сборка публикуется на GitHub Pages по адресу /katya/
+// Прод-сборка публикуется на GitHub Pages по адресу /portfolio/ (имя репозитория)
 export default defineConfig(({ command }) => ({
-  base: command === 'build' ? '/katya/' : '/',
+  base: command === 'build' ? '/portfolio/' : '/',
   plugins: [vue(), tailwindcss()],
   resolve: {
     alias: {
