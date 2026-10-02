@@ -1,15 +1,7 @@
 # Портфолио дизайнера
 
-Минималистичный сайт-портфолио на **Vue 3 + TypeScript + Vite**.
-Пастельная палитра, адаптивная вёрстка, фиксированное меню слева на десктопе.
-
-## Технологии
-
-- Vue 3 (Composition API, `<script setup>`)
-- Vue Router — маршрут `/` и `/projects/:slug`
-- Pinia — централизованное хранилище проектов
-- TypeScript — типы `Project`, `ProjectTag`, `ProjectBlock`
-- SCSS с общими дизайн-токенами (`src/styles/_variables.scss`)
+Сайт-портфолио на **Vue 3 + TypeScript + Vite + Tailwind CSS v4**.
+Макет: [Figma](https://www.figma.com/design/dlgMdFSwL4R7X38motUeDw).
 
 ## Запуск
 
@@ -25,28 +17,39 @@ npm run preview  # предпросмотр сборки
 ```
 src/
 ├── components/
-│   ├── Layout.vue         # раскладка: fixed-меню + контент
-│   ├── SidebarMenu.vue    # меню (обо мне, теги, Telegram, CV)
-│   ├── ProjectGrid.vue    # адаптивная сетка карточек
-│   ├── ProjectCard.vue    # карточка проекта
-│   ├── ProjectDetail.vue  # страница проекта
-│   └── Tag.vue            # пастельный тег-«пилюля»
-├── views/
-│   ├── HomeView.vue       # главная со списком проектов
-│   ├── ProjectView.vue    # /projects/:slug
-│   └── NotFoundView.vue   # «Проект не найден»
-├── data/projects.ts       # моковые проекты
-├── stores/projects.ts     # Pinia store
-├── types/project.ts       # TypeScript-типы
-└── styles/                # токены и глобальные стили
+│   ├── Layout.vue        # колонка 900px: шапка + контент
+│   ├── SiteHeader.vue    # липкая шапка с навигацией по секциям
+│   ├── HeroSection.vue   # первый блок
+│   ├── ConceptsSection.vue  # сетка концептов 8/4 (от планшета)
+│   ├── ConceptCard.vue   # карточка концепта
+│   ├── DotsBackground.vue  # фон из точек + курсор-круг (GSAP)
+│   ├── vue-bits/DotGrid.vue  # сетка точек из Vue Bits (vue-bits.dev), с увеличением у курсора
+│   ├── AboutSection.vue  # «Обо мне»: контакты и ключевые результаты
+│   ├── SectionTitle.vue  # заголовок секции
+│   └── Pill.vue          # кнопка-«пилюля» (ghost / accent / light)
+├── composables/
+│   └── useActiveSection.ts  # подсветка активного пункта навигации
+├── data/
+│   ├── profile.ts        # имя, почта, ссылки, пункты навигации
+│   └── concepts.ts       # UI-концепты (пока моки)
+├── views/                # HomeView, ConceptView (/concepts/:slug), NotFoundView
+└── styles/tailwind.css   # цвета и шрифт (@theme)
 ```
 
-## Наполнение реальными данными
+## Цвета
 
-- **Проекты** — редактируйте `src/data/projects.ts` по структуре типа `Project`.
-- **Изображения** — кладите в `public/images` и указывайте путь в проекте
-  (заглушки сгенерированы скриптом `scripts/gen-placeholders.mjs`).
-- **CV** — замените `public/cv.pdf` на настоящее резюме.
-- **Telegram** — обновите ссылку в `src/components/SidebarMenu.vue`.
-```
-# katya
+Заданы в `src/styles/tailwind.css` и доступны как классы `bg-brand`, `text-ink` и т.д.:
+
+| Токен | Цвет | Где |
+|---|---|---|
+| `brand` | `#8B6FF0` | шапка, карточки |
+| `accent` | `#F2FF94` | главное действие, активный пункт |
+| `surface` | `#F5F5F5` | фон страницы |
+| `ink` | `#1F1D2B` | тёмный текст |
+
+## Наполнение
+
+- **Концепты** — `src/data/concepts.ts`: сейчас моки, обложки — градиенты-заглушки.
+- **Ссылки и почта** — `src/data/profile.ts` (Telegram и LinkedIn пока заглушки).
+- **Новая секция** — добавьте компонент с `id` в `HomeView.vue` и пункт в `navSections`.
+- **CV** — замените `public/cv.pdf`.

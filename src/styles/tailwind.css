@@ -1,0 +1,24 @@
+@import 'tailwindcss';
+
+/*
+ * Дизайн-токены для Tailwind-классов: bg-brand, text-ink, bg-accent и т.д.
+ * Фон страницы продублирован в _variables.scss ($color-surface) для SCSS-компонентов.
+ */
+@theme {
+  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  --color-brand: #8b6ff0; /* основной фиолетовый — карточки и шапка */
+  --color-accent: #f2ff94; /* лаймовый — только точечные акценты */
+  --color-surface: #f5f5f5; /* фон страницы */
+  --color-ink: #1f1d2b; /* тёмный текст, в т.ч. на лаймовом */
+}
+
+@layer base {
+  body {
+    @apply bg-surface font-sans text-ink antialiased;
+  }
+
+  ::selection {
+    @apply bg-accent text-ink;
+  }
+}

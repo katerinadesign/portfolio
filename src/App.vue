@@ -5,21 +5,15 @@ import Layout from '@/components/Layout.vue'
 <template>
   <Layout>
     <RouterView v-slot="{ Component }">
-      <Transition name="fade" mode="out-in">
+      <Transition
+        mode="out-in"
+        enter-active-class="transition-opacity duration-250"
+        leave-active-class="transition-opacity duration-250"
+        enter-from-class="opacity-0"
+        leave-to-class="opacity-0"
+      >
         <component :is="Component" />
       </Transition>
     </RouterView>
   </Layout>
 </template>
-
-<style lang="scss">
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity $transition;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>
