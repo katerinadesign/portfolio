@@ -91,7 +91,7 @@ onBeforeUnmount(() => cleanup?.())
     <DotGrid
       :dot-size="2"
       :gap="GRID_STEP - 2"
-      base-color="#cbbff3"
+      base-color="#dcd5f4"
       active-color="#8b6ff0"
       :proximity="zoneRadius"
       :scale-steps="SCALE_STEPS"
