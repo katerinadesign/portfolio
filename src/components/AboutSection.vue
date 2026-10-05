@@ -58,7 +58,7 @@ async function copyEmail() {
         </div>
       </div>
 
-      <div class="rounded-[32px] bg-brand p-5 text-white sm:p-6">
+      <div class="rounded-[32px] bg-brand p-5 pb-[30px] text-white sm:p-6 sm:pb-[34px]">
         <h3 class="text-lg leading-snug font-semibold sm:text-xl sm:leading-7">
           5 ключевых результатов:
         </h3>

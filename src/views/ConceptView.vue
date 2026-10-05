@@ -15,7 +15,7 @@ const next = computed(() => concepts[(index.value + 1) % concepts.length])
 <template>
   <NotFoundView v-if="!concept" />
 
-  <article v-else class="flex flex-col gap-2">
+  <article v-else class="mx-auto flex w-full max-w-page flex-col gap-2">
     <section class="flex flex-col gap-8 rounded-[32px] bg-brand p-5 text-white sm:p-6">
       <Pill :to="{ name: 'home', hash: '#concepts' }" medium class="self-start">
         ← Все концепты

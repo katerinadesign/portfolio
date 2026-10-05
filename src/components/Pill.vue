@@ -26,9 +26,9 @@ const variants = {
 }
 
 const classes = computed(() => [
-  'inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-3.5 py-2.5 text-[13px] leading-5 transition',
+  'inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-[19px] py-[15px] text-[13px] leading-5 transition',
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
-  'sm:px-4 sm:py-3 sm:text-sm',
+  'sm:px-[21px] sm:py-[17px] sm:text-sm',
   props.medium ? 'font-medium' : 'font-bold',
   variants[props.variant],
 ])

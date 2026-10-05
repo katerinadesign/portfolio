@@ -11,6 +11,8 @@
   --color-accent: #f2ff94; /* лаймовый — только точечные акценты */
   --color-surface: #f5f5f5; /* фон страницы */
   --color-ink: #1f1d2b; /* тёмный текст, в т.ч. на лаймовом */
+
+  --container-page: 900px; /* основная колонка контента: max-w-page */
 }
 
 @layer base {

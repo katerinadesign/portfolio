@@ -14,7 +14,7 @@ const baseUrl = import.meta.env.BASE_URL
   >
     <RouterLink
       to="/"
-      class="flex shrink-0 items-center gap-2 rounded-full bg-white py-1.5 pr-1.5 pl-1.5 text-ink transition hover:bg-white/90 sm:pr-4 sm:pl-2"
+      class="flex shrink-0 items-center gap-2 rounded-full bg-white py-[11px] pr-[11px] pl-[11px] text-ink transition hover:bg-white/90 sm:pr-[21px] sm:pl-[13px]"
       :aria-label="`${profile.name} — на главную`"
     >
       <img

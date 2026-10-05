@@ -9,6 +9,6 @@ export const profile = {
 
 /** Секции главной, на которые ведёт навигация в шапке. Новые блоки добавлять сюда же. */
 export const navSections = [
-  { id: 'concepts', label: 'UI-концепты' },
+  { id: 'concepts', label: 'Проекты' },
   { id: 'about', label: 'Обо мне' },
 ]

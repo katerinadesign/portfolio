@@ -19,7 +19,7 @@ defineProps<{ concept: Concept }>()
 
     <div class="mt-auto overflow-hidden rounded-2xl">
       <div
-        class="flex h-56 items-center justify-center bg-linear-to-br transition duration-500 group-hover:scale-[1.03] sm:h-72"
+        class="flex h-56 items-center justify-center bg-linear-to-br transition duration-500 group-hover:scale-[1.03] sm:h-72 lg:h-[420px]"
         :class="concept.cover"
       >
         <span class="rounded-full bg-white/70 px-3 py-1 text-xs font-medium text-ink/60">
