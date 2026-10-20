@@ -7,7 +7,10 @@ defineProps<{ concept: Concept }>()
 </script>
 
 <template>
-  <!-- Ссылка на страницу концепта растянута на всю карточку (after:absolute) -->
+  <!--
+    Ссылка на страницу концепта растянута на всю карточку (after:absolute) и лежит
+    поверх обложки (after:z-10), поэтому карточка кликается в любом месте
+  -->
   <article
     class="group relative flex h-full flex-col gap-4 rounded-[32px] bg-white p-5 text-ink transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-brand/15 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-brand sm:p-6"
   >
@@ -15,7 +18,7 @@ defineProps<{ concept: Concept }>()
       <h3 class="text-lg leading-6 font-bold tracking-tight uppercase sm:text-xl">
         <RouterLink
           :to="{ name: 'concept', params: { slug: concept.slug } }"
-          class="outline-none after:absolute after:inset-0 after:rounded-[32px]"
+          class="outline-none after:absolute after:inset-0 after:z-10 after:rounded-[32px]"
         >
           {{ concept.title }}
         </RouterLink>
