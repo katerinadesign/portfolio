@@ -2,8 +2,8 @@
 export const profile = {
   name: 'Екатерина Кабалина',
   email: 'botina_e@ibox.ru',
-  // TODO: заменить на настоящие ссылки
-  telegramUrl: 'https://t.me/username',
+  telegramUrl: 'https://t.me/katerinakabalina',
+  // TODO: заменить на настоящую ссылку
   linkedinUrl: 'https://www.linkedin.com/',
 }
 

@@ -50,6 +50,6 @@ src/
 ## Наполнение
 
 - **Проекты и концепты** — `src/data/concepts.ts`. `image` — обложка карточки (файл в `public/images/concepts`). Проекты пока моки.
-- **Ссылки и почта** — `src/data/profile.ts` (Telegram и LinkedIn пока заглушки).
+- **Ссылки и почта** — `src/data/profile.ts` (LinkedIn пока заглушка).
 - **Новая секция** — добавьте компонент с `id` в `HomeView.vue` и пункт в `navSections`.
 - **CV** — замените `public/cv.pdf`.
