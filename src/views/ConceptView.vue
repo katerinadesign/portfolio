@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import Pill from '@/components/Pill.vue'
+import ConceptCover from '@/components/ConceptCover.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 import { concepts } from '@/data/concepts'
 
@@ -10,6 +11,9 @@ const props = defineProps<{ slug: string }>()
 const index = computed(() => concepts.findIndex((c) => c.slug === props.slug))
 const concept = computed(() => concepts[index.value])
 const next = computed(() => concepts[(index.value + 1) % concepts.length])
+
+const baseUrl = import.meta.env.BASE_URL
+
 </script>
 
 <template>
@@ -17,14 +21,14 @@ const next = computed(() => concepts[(index.value + 1) % concepts.length])
 
   <article v-else class="mx-auto flex w-full max-w-page flex-col gap-2">
     <section class="flex flex-col gap-8 rounded-[32px] bg-brand p-5 text-white sm:p-6">
-      <Pill :to="{ name: 'home', hash: '#concepts' }" medium class="self-start">
-        ← Все концепты
+      <Pill :to="{ name: 'home', hash: '#projects' }" medium class="self-start">
+        ← Все проекты
       </Pill>
       <div class="flex flex-col gap-4">
         <h1 class="text-[32px] leading-[1.1] font-bold tracking-[-0.02em] sm:text-5xl">
           {{ concept.title }}
         </h1>
-        <p class="max-w-[560px] text-base leading-snug font-medium sm:text-xl sm:leading-7">
+        <p v-if="concept.summary" class="max-w-[560px] text-base leading-snug font-medium sm:text-xl sm:leading-7">
           {{ concept.summary }}
         </p>
       </div>
@@ -36,7 +40,9 @@ const next = computed(() => concepts[(index.value + 1) % concepts.length])
     </section>
 
     <div class="overflow-hidden rounded-[32px]">
+      <ConceptCover v-if="concept.image" :image="concept.image" class="bg-white" />
       <div
+        v-else
         class="flex h-64 items-center justify-center bg-linear-to-br sm:h-[420px]"
         :class="concept.cover"
       >
@@ -44,6 +50,25 @@ const next = computed(() => concepts[(index.value + 1) % concepts.length])
           Главный экран концепта
         </span>
       </div>
+    </div>
+
+    <!--
+      Дополнительные экраны концепта — без подписей. Карточка в пропорциях обложки PECO
+      (1992×1379), телефон по центру занимает 81.33% её высоты — как телефоны на обложке
+    -->
+    <div
+      v-for="shot in concept.gallery"
+      :key="shot.src"
+      class="relative aspect-[1992/1379] rounded-[32px] bg-white"
+    >
+      <img
+        :src="`${baseUrl}${shot.src}`"
+        :width="shot.width"
+        :height="shot.height"
+        :alt="shot.alt"
+        loading="lazy"
+        class="absolute top-1/2 left-1/2 block h-[81.33%] w-auto max-w-none -translate-x-1/2 -translate-y-1/2"
+      />
     </div>
 
     <section

@@ -2,6 +2,7 @@
 import HeroSection from '@/components/HeroSection.vue'
 import ConceptsSection from '@/components/ConceptsSection.vue'
 import AboutSection from '@/components/AboutSection.vue'
+import ContactSection from '@/components/ContactSection.vue'
 </script>
 
 <template>
@@ -10,5 +11,6 @@ import AboutSection from '@/components/AboutSection.vue'
     <!-- Отступ от первого блока до проектов — 60px (8px gap + 52px) -->
     <ConceptsSection class="mt-[52px]" />
     <AboutSection class="mx-auto w-full max-w-page" />
+    <ContactSection class="mx-auto w-full max-w-page" />
   </div>
 </template>

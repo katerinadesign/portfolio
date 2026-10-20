@@ -138,7 +138,7 @@ html.custom-cursor * {
   width: 16px;
   height: 16px;
   border-radius: 9999px;
-  background-color: var(--color-brand);
+  background-color: color-mix(in srgb, var(--color-brand) 78%, white); /* фиолетовый чуть светлее */
   transform: translate(-50%, -50%);
   transition:
     width 0.2s cubic-bezier(0.22, 1, 0.36, 1),

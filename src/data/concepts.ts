@@ -3,14 +3,43 @@ export interface ConceptSection {
   text: string
 }
 
+/** Видео поверх части картинки: положение и скругление — в процентах от картинки */
+export interface ConceptImageVideo {
+  src: string
+  left: number
+  top: number
+  width: number
+  height: number
+  /** CSS border-radius, например «12.3% / 5.7%» */
+  radius: string
+  /**
+   * Увеличение видео внутри рамки по ширине и высоте — чтобы спрятать тёмные края записи
+   * (по умолчанию 1). Раздельно, чтобы не срезать лишнее сверху, где рамка тоньше
+   */
+  scale?: { x: number; y: number }
+}
+
+export interface ConceptImage {
+  src: string
+  width: number
+  height: number
+  alt: string
+  video?: ConceptImageVideo
+}
+
 export interface Concept {
   slug: string
   title: string
-  summary: string
+  /** Подпись под заголовком; можно не указывать */
+  summary?: string
   year: string
   platform: string
   /** Классы градиента-заглушки вместо обложки, пока нет макетов */
   cover: string
+  /** Картинка-обложка (путь от public/): в карточке на главной и на странице концепта */
+  image?: ConceptImage
+  /** Дополнительные экраны на странице концепта (без подписей), идут сразу после обложки */
+  gallery?: ConceptImage[]
   sections: ConceptSection[]
 }
 
@@ -23,13 +52,40 @@ const mockSections: ConceptSection[] = [
 
 export const concepts: Concept[] = [
   {
-    slug: 'flower-delivery',
-    title: 'Доставка цветов',
-    summary: 'Мобильное приложение для заказа букетов',
-    year: '2026',
+    slug: 'peco',
+    title: 'Концепты',
+    year: '2026', // TODO: уточнить год
     platform: 'iOS',
-    cover: 'from-brand/40 to-accent',
-    sections: mockSections,
+    cover: 'from-accent/60 to-white',
+    image: {
+      src: 'images/concepts/peco-screens.jpg',
+      width: 1992,
+      height: 1379,
+      alt: 'Три экрана приложения PECO: тест воздуха, статус фильтра и заказ фильтра',
+      // Запись анимации среднего экрана поверх картинки. Положение — из Figma:
+      // экран 390×844 с радиусом 48 в секции 1505×1044 (x 540, y 100);
+      // картинка — секция в масштабе ×1.3289 с обрезкой 4px по краям
+      video: {
+        src: 'videos/peco-filter-status.mp4',
+        left: 35.82,
+        top: 9.35,
+        width: 26.02,
+        height: 81.33,
+        radius: '12.3% / 5.69%',
+        // в записи тёмная рамка ~6px по бокам (0.9% ширины) и ~5px сверху/снизу (0.3% высоты)
+        scale: { x: 1.025, y: 1.008 },
+      },
+    },
+    gallery: [
+      {
+        src: 'images/concepts/heart-control.webp',
+        width: 780,
+        height: 1688,
+        alt: 'Экран приложения для удалённого контроля сердца: пульс, интервал ударов и давление',
+      },
+    ],
+    // TODO: описание решения и итога
+    sections: mockSections.filter((section) => section.title !== 'Задача'),
   },
   {
     slug: 'meditation',

@@ -20,7 +20,7 @@ src/
 │   ├── Layout.vue        # колонка 900px: шапка + контент
 │   ├── SiteHeader.vue    # липкая шапка с навигацией по секциям
 │   ├── HeroSection.vue   # первый блок
-│   ├── ConceptsSection.vue  # сетка концептов 8/4 (от планшета)
+│   ├── ConceptsSection.vue  # блок «Проекты»: сетка на всю ширину (~1.6 : 1)
 │   ├── ConceptCard.vue   # карточка концепта
 │   ├── DotsBackground.vue  # фон из точек + курсор-круг (GSAP)
 │   ├── vue-bits/DotGrid.vue  # сетка точек из Vue Bits (vue-bits.dev), с увеличением у курсора
@@ -31,7 +31,7 @@ src/
 │   └── useActiveSection.ts  # подсветка активного пункта навигации
 ├── data/
 │   ├── profile.ts        # имя, почта, ссылки, пункты навигации
-│   └── concepts.ts       # UI-концепты (пока моки)
+│   └── concepts.ts       # карточки проектов (обложка)
 ├── views/                # HomeView, ConceptView (/concepts/:slug), NotFoundView
 └── styles/tailwind.css   # цвета и шрифт (@theme)
 ```
@@ -49,7 +49,7 @@ src/
 
 ## Наполнение
 
-- **Концепты** — `src/data/concepts.ts`: сейчас моки, обложки — градиенты-заглушки.
+- **Проекты и концепты** — `src/data/concepts.ts`. `image` — обложка карточки (файл в `public/images/concepts`). Проекты пока моки.
 - **Ссылки и почта** — `src/data/profile.ts` (Telegram и LinkedIn пока заглушки).
 - **Новая секция** — добавьте компонент с `id` в `HomeView.vue` и пункт в `navSections`.
 - **CV** — замените `public/cv.pdf`.

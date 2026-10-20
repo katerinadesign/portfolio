@@ -4,7 +4,7 @@ import { concepts } from '@/data/concepts'
 </script>
 
 <template>
-  <section id="concepts" aria-label="Проекты">
+  <section id="projects" aria-label="Проекты">
     <!--
       На всю ширину страницы. От планшета — две колонки в пропорции ~1.6 : 1
       (широкая карточка слева, узкая справа), на мобильном — одна колонка.

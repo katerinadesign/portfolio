@@ -23,11 +23,18 @@ const baseUrl = import.meta.env.BASE_URL
       </p>
     </div>
 
-    <div class="flex flex-wrap gap-0.5">
-      <Pill :href="profile.telegramUrl" variant="accent" target="_blank" rel="noopener noreferrer">
-        Написать в TG
-      </Pill>
-      <Pill :href="profile.linkedinUrl" target="_blank" rel="noopener noreferrer">LinkedIn</Pill>
+    <!--
+      CV прижата вправо. Отрицательный отступ выравнивает её правый край с кнопкой
+      «Обо мне» в шапке: внутренний отступ шапки меньше, чем у этого блока
+      (8 против 20px на телефоне, 16 против 24px от планшета)
+    -->
+    <div class="-mr-3 flex flex-wrap items-center justify-between gap-0.5 sm:-mr-2">
+      <div class="flex flex-wrap gap-0.5">
+        <Pill :href="profile.telegramUrl" variant="accent" target="_blank" rel="noopener noreferrer">
+          Написать в TG
+        </Pill>
+        <Pill :href="profile.linkedinUrl" target="_blank" rel="noopener noreferrer">LinkedIn</Pill>
+      </div>
       <Pill :href="`${baseUrl}cv.pdf`" download>↓ CV</Pill>
     </div>
   </section>
