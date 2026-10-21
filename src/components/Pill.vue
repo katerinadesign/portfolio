@@ -8,6 +8,7 @@ import { RouterLink, type RouteLocationRaw } from 'vue-router'
  * - ghost — полупрозрачная на фиолетовом фоне;
  * - accent — лаймовая, для главного действия и активного пункта;
  * - light — белая.
+ * `square` — круглая кнопка под один значок или пару букв (той же высоты, что обычная).
  */
 const props = withDefaults(
   defineProps<{
@@ -15,6 +16,7 @@ const props = withDefaults(
     href?: string
     variant?: 'ghost' | 'accent' | 'light'
     medium?: boolean
+    square?: boolean
   }>(),
   { variant: 'ghost' },
 )
@@ -26,9 +28,12 @@ const variants = {
 }
 
 const classes = computed(() => [
-  'inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-[19px] py-[15px] text-[13px] leading-5 transition',
+  'inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full text-[13px] leading-5 transition',
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
-  'sm:px-[21px] sm:py-[17px] sm:text-sm',
+  'sm:text-sm',
+  props.square
+    ? 'size-[50px] justify-center sm:size-[54px]'
+    : 'px-[19px] py-[15px] sm:px-[21px] sm:py-[17px]',
   props.medium ? 'font-medium' : 'font-bold',
   variants[props.variant],
 ])

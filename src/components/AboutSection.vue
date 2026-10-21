@@ -48,8 +48,7 @@ async function copyEmail() {
             <Pill :href="profile.telegramUrl" variant="accent" target="_blank" rel="noopener noreferrer">
               TG
             </Pill>
-            <Pill :href="profile.linkedinUrl" target="_blank" rel="noopener noreferrer">LinkedIn</Pill>
-            <Pill :href="`${baseUrl}cv.pdf`" download>↓ CV</Pill>
+            <Pill :href="`${baseUrl}cv.pdf`" download>Моё резюме</Pill>
           </div>
           <Pill medium :aria-label="`Скопировать почту ${profile.email}`" @click="copyEmail">
             {{ copied ? 'Скопировано ✓' : profile.email }}
@@ -58,7 +57,7 @@ async function copyEmail() {
         </div>
       </div>
 
-      <div class="rounded-[32px] bg-brand p-5 pb-[30px] text-white sm:p-6 sm:pb-[34px]">
+      <div class="rounded-[32px] bg-brand p-5 pt-[30px] pb-[40px] text-white sm:p-6 sm:pt-[34px] sm:pb-[44px]">
         <h3 class="text-lg leading-snug font-semibold sm:text-xl sm:leading-7">
           5 ключевых результатов:
         </h3>

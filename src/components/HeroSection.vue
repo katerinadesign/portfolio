@@ -7,7 +7,7 @@ const baseUrl = import.meta.env.BASE_URL
 
 <template>
   <section
-    class="flex flex-col justify-between gap-[150px] rounded-[32px] bg-brand p-5 text-white sm:p-6"
+    class="flex flex-col justify-between gap-[75px] rounded-[32px] bg-brand p-5 text-white sm:p-6"
   >
     <div class="flex flex-col gap-6 sm:gap-8">
       <h1 class="text-[26px] leading-[1.1] font-bold tracking-[-0.02em] sm:text-[32px] sm:leading-[30px]">
@@ -15,16 +15,15 @@ const baseUrl = import.meta.env.BASE_URL
       </h1>
       <p class="text-base leading-snug font-medium sm:text-xl sm:leading-7">
         <!-- Переносы строк заданы вручную от планшета; на телефоне текст переносится сам -->
-        Mindset (120K MAU), Staylo<br class="hidden sm:inline" />
-        и&nbsp;<span class="whitespace-nowrap">e-commerce</span> — конверсия 18→27%,
-        <span class="whitespace-nowrap">−22% отказов на checkout,</span><br class="hidden sm:inline" />
+        Mindset (120K MAU), Staylo и&nbsp;<span class="whitespace-nowrap">e-commerce</span> — конверсия 18→27%,<br class="hidden sm:inline" />
+        <span class="whitespace-nowrap">−22% отказов на checkout,</span>
         использование фильтров 9→34%,<br class="hidden sm:inline" />
         <span class="whitespace-nowrap">−40% времени сборки экранов</span>
       </p>
     </div>
 
     <!--
-      CV прижата вправо. Отрицательный отступ выравнивает её правый край с кнопкой
+      Почта и hh прижаты вправо. Отрицательный отступ выравнивает правый край с кнопкой
       «Обо мне» в шапке: внутренний отступ шапки меньше, чем у этого блока
       (8 против 20px на телефоне, 16 против 24px от планшета)
     -->
@@ -33,9 +32,17 @@ const baseUrl = import.meta.env.BASE_URL
         <Pill :href="profile.telegramUrl" variant="accent" target="_blank" rel="noopener noreferrer">
           Написать в TG
         </Pill>
-        <Pill :href="profile.linkedinUrl" target="_blank" rel="noopener noreferrer">LinkedIn</Pill>
+        <Pill :href="`${baseUrl}cv.pdf`" download>Моё резюме</Pill>
       </div>
-      <Pill :href="`${baseUrl}cv.pdf`" download>↓ CV</Pill>
+      <!-- ml-auto — остаются справа, даже когда на узком экране переносятся на новую строку -->
+      <div class="ml-auto flex gap-0.5">
+        <Pill square :href="`mailto:${profile.email}`" :aria-label="`Написать на почту ${profile.email}`">
+          @
+        </Pill>
+        <Pill square :href="profile.hhUrl" target="_blank" rel="noopener noreferrer" aria-label="Резюме на hh.ru">
+          hh
+        </Pill>
+      </div>
     </div>
   </section>
 </template>
