@@ -12,7 +12,6 @@ const index = computed(() => concepts.findIndex((c) => c.slug === props.slug))
 const concept = computed(() => concepts[index.value])
 const next = computed(() => concepts[(index.value + 1) % concepts.length])
 
-const baseUrl = import.meta.env.BASE_URL
 
 </script>
 
@@ -53,23 +52,23 @@ const baseUrl = import.meta.env.BASE_URL
     </div>
 
     <!--
-      Дополнительные экраны концепта — без подписей. Карточка в пропорциях обложки PECO
-      (1992×1379), телефон по центру занимает 81.33% её высоты — как телефоны на обложке
+      Дополнительные экраны концепта — без подписей.
+      layout 'full' — картинка во всю ширину; иначе — один экран: карточка в пропорциях
+      обложки PECO (1992×1379), телефон по центру занимает 81.33% её высоты, как на обложке
     -->
-    <div
-      v-for="shot in concept.gallery"
-      :key="shot.src"
-      class="relative aspect-[1992/1379] rounded-[32px] bg-white"
-    >
-      <img
-        :src="`${baseUrl}${shot.src}`"
-        :width="shot.width"
-        :height="shot.height"
-        :alt="shot.alt"
-        loading="lazy"
-        class="absolute top-1/2 left-1/2 block h-[81.33%] w-auto max-w-none -translate-x-1/2 -translate-y-1/2"
-      />
-    </div>
+    <template v-for="shot in concept.gallery" :key="shot.src">
+      <div v-if="shot.layout === 'full'" class="overflow-hidden rounded-[32px] bg-white">
+        <ConceptCover :image="shot" lazy />
+      </div>
+      <div v-else class="relative aspect-[1992/1379] rounded-[32px] bg-white">
+        <div
+          class="absolute top-1/2 left-1/2 h-[81.33%] -translate-x-1/2 -translate-y-1/2"
+          :style="{ aspectRatio: `${shot.width} / ${shot.height}` }"
+        >
+          <ConceptCover :image="shot" lazy />
+        </div>
+      </div>
+    </template>
 
     <section
       v-for="section in concept.sections"

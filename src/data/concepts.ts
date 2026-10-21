@@ -3,7 +3,7 @@ export interface ConceptSection {
   text: string
 }
 
-/** Видео поверх части картинки: положение и скругление — в процентах от картинки */
+/** Видео поверх части картинки (например, экрана): положение и скругление — в процентах от картинки */
 export interface ConceptImageVideo {
   src: string
   left: number
@@ -24,7 +24,13 @@ export interface ConceptImage {
   width: number
   height: number
   alt: string
-  video?: ConceptImageVideo
+  /** Видео поверх отдельных экранов на картинке */
+  videos?: ConceptImageVideo[]
+  /**
+   * Как показывать в галерее страницы концепта: 'phone' — один экран по центру карточки
+   * (по умолчанию), 'full' — картинка во всю ширину (например, несколько экранов)
+   */
+  layout?: 'phone' | 'full'
 }
 
 export interface Concept {
@@ -62,19 +68,21 @@ export const concepts: Concept[] = [
       width: 1992,
       height: 1379,
       alt: 'Три экрана приложения PECO: тест воздуха, статус фильтра и заказ фильтра',
-      // Запись анимации среднего экрана поверх картинки. Положение — из Figma:
-      // экран 390×844 с радиусом 48 в секции 1505×1044 (x 540, y 100);
-      // картинка — секция в масштабе ×1.3289 с обрезкой 4px по краям
-      video: {
-        src: 'videos/peco-filter-status.mp4',
-        left: 35.82,
-        top: 9.35,
-        width: 26.02,
-        height: 81.33,
-        radius: '12.3% / 5.69%',
-        // в записи тёмная рамка ~6px по бокам (0.9% ширины) и ~5px сверху/снизу (0.3% высоты)
-        scale: { x: 1.025, y: 1.008 },
-      },
+      videos: [
+        // Запись анимации среднего экрана. Положение — из Figma:
+        // экран 390×844 с радиусом 48 в секции 1505×1044 (x 540, y 100);
+        // картинка — секция в масштабе ×1.3289 с обрезкой 4px по краям
+        {
+          src: 'videos/peco-filter-status.mp4',
+          left: 35.82,
+          top: 9.35,
+          width: 26.02,
+          height: 81.33,
+          radius: '12.3% / 5.69%',
+          // в записи тёмная рамка ~6px по бокам (0.9% ширины) и ~5px сверху/снизу (0.3% высоты)
+          scale: { x: 1.025, y: 1.008 },
+        },
+      ],
     },
     gallery: [
       {
@@ -82,10 +90,57 @@ export const concepts: Concept[] = [
         width: 780,
         height: 1688,
         alt: 'Экран приложения для удалённого контроля сердца: пульс, интервал ударов и давление',
+        // Запись анимации экрана — на всю картинку, углы как у экрана в Figma (48px при 390×844)
+        videos: [
+          {
+            src: 'videos/heart-control.mp4',
+            left: 0,
+            top: 0,
+            width: 100,
+            height: 100,
+            radius: '12.31% / 5.69%',
+          },
+        ],
+      },
+      {
+        src: 'images/concepts/beyond-finance.webp',
+        width: 2000,
+        height: 1420,
+        alt: 'Три экрана финансового приложения Beyond: приветствие, карты и история, перевод',
+        layout: 'full',
+        // Записи анимаций всех трёх экранов. Положение замерено по картинке:
+        // телефоны 532×1148 в точках (81, 136), (734, 136) и (1387, 136), радиус углов ~65px
+        // (48px из Figma в масштабе)
+        videos: [
+          {
+            src: 'videos/beyond-intro.mp4',
+            left: 4.05,
+            top: 9.58,
+            width: 26.6,
+            height: 80.85,
+            radius: '12.31% / 5.71%',
+          },
+          {
+            src: 'videos/beyond-cards.mp4',
+            left: 36.7,
+            top: 9.58,
+            width: 26.6,
+            height: 80.85,
+            radius: '12.31% / 5.71%',
+          },
+          {
+            src: 'videos/beyond-transfer.mp4',
+            left: 69.35,
+            top: 9.58,
+            width: 26.6,
+            height: 80.85,
+            radius: '12.31% / 5.71%',
+          },
+        ],
       },
     ],
-    // TODO: описание решения и итога
-    sections: mockSections.filter((section) => section.title !== 'Задача'),
+    // TODO: описание итога
+    sections: mockSections.filter((section) => section.title === 'Итог'),
   },
   {
     slug: 'meditation',

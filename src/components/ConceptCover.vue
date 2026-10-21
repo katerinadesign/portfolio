@@ -3,28 +3,30 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import type { ConceptImage } from '@/data/concepts'
 
 /**
- * Обложка концепта: картинка и, если задано, видео поверх её части (например, анимация
- * одного из экранов). Видео играет, только пока видно на экране; при reduced motion —
- * не показывается, остаётся статичная картинка.
+ * Обложка концепта: картинка и, если заданы, видео поверх её частей (например, анимации
+ * отдельных экранов). Видео играют, только пока видны на экране; при reduced motion —
+ * не показываются, остаётся статичная картинка.
  */
 const props = defineProps<{ image: ConceptImage; lazy?: boolean }>()
 
 const baseUrl = import.meta.env.BASE_URL
 const reducedMotion =
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-const showVideo = Boolean(props.image.video) && !reducedMotion
+const videos = reducedMotion ? [] : (props.image.videos ?? [])
 
-const video = ref<HTMLVideoElement | null>(null)
+const videoEls = ref<HTMLVideoElement[]>([])
 let observer: IntersectionObserver | null = null
 
 onMounted(() => {
-  const el = video.value
-  if (!el) return
-  observer = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) el.play().catch(() => {})
-    else el.pause()
+  if (!videoEls.value.length) return
+  observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      const el = entry.target as HTMLVideoElement
+      if (entry.isIntersecting) el.play().catch(() => {})
+      else el.pause()
+    }
   })
-  observer.observe(el)
+  videoEls.value.forEach((el) => observer!.observe(el))
 })
 
 onBeforeUnmount(() => observer?.disconnect())
@@ -42,26 +44,27 @@ onBeforeUnmount(() => observer?.disconnect())
     />
     <!-- Рамка обрезает видео по форме экрана; само видео можно чуть увеличить (scale) -->
     <div
-      v-if="showVideo && image.video"
+      v-for="video in videos"
+      :key="video.src"
       class="absolute overflow-hidden"
       :style="{
-        left: `${image.video.left}%`,
-        top: `${image.video.top}%`,
-        width: `${image.video.width}%`,
-        height: `${image.video.height}%`,
-        borderRadius: image.video.radius,
+        left: `${video.left}%`,
+        top: `${video.top}%`,
+        width: `${video.width}%`,
+        height: `${video.height}%`,
+        borderRadius: video.radius,
       }"
     >
       <video
-        ref="video"
-        :src="`${baseUrl}${image.video.src}`"
+        ref="videoEls"
+        :src="`${baseUrl}${video.src}`"
         muted
         loop
         playsinline
         preload="none"
         aria-hidden="true"
         class="block size-full object-cover"
-        :style="{ transform: `scale(${image.video.scale?.x ?? 1}, ${image.video.scale?.y ?? 1})` }"
+        :style="{ transform: `scale(${video.scale?.x ?? 1}, ${video.scale?.y ?? 1})` }"
       />
     </div>
   </div>
