@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import ConceptCover from '@/components/ConceptCover.vue'
-import type { Concept } from '@/data/concepts'
+import { conceptLink, type Concept } from '@/data/concepts'
 
 defineProps<{ concept: Concept }>()
 </script>
@@ -17,7 +17,7 @@ defineProps<{ concept: Concept }>()
     <div>
       <h3 class="text-lg leading-6 font-bold tracking-tight uppercase sm:text-xl">
         <RouterLink
-          :to="{ name: 'concept', params: { slug: concept.slug } }"
+          :to="conceptLink(concept)"
           class="outline-none after:absolute after:inset-0 after:z-10 after:rounded-[32px]"
         >
           {{ concept.title }}

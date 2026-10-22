@@ -22,17 +22,22 @@ src/
 │   ├── HeroSection.vue   # первый блок
 │   ├── ConceptsSection.vue  # блок «Проекты»: сетка на всю ширину (~1.6 : 1)
 │   ├── ConceptCard.vue   # карточка концепта
+│   ├── ConceptStage.vue  # экраны на странице концепта: до 1040px, узкая рамка
+│   ├── ConceptCover.vue  # картинка с видео поверх экранов
 │   ├── DotsBackground.vue  # фон из точек + курсор-круг (GSAP)
 │   ├── vue-bits/DotGrid.vue  # сетка точек из Vue Bits (vue-bits.dev), с увеличением у курсора
 │   ├── AboutSection.vue  # «Обо мне»: контакты и ключевые результаты
 │   ├── SectionTitle.vue  # заголовок секции
-│   └── Pill.vue          # кнопка-«пилюля» (ghost / accent / light)
+│   ├── Pill.vue          # кнопка-«пилюля» (ghost / accent / light)
+│   └── cases/            # кейсы с собственной вёрсткой страницы
+│       ├── CaseSection.vue   # раздел кейса: номер, рубрика, заголовок
+│       └── mindset/          # кейс Mindset и макеты экранов приложения кодом
 ├── composables/
 │   └── useActiveSection.ts  # подсветка активного пункта навигации
 ├── data/
 │   ├── profile.ts        # имя, почта, ссылки, пункты навигации
-│   └── concepts.ts       # карточки проектов (обложка)
-├── views/                # HomeView, ConceptView (/concepts/:slug), NotFoundView
+│   └── concepts.ts       # карточки проектов (обложка; route — отдельная страница кейса)
+├── views/                # HomeView, ConceptView (/concepts/:slug), MindsetView (/projects/mindset), NotFoundView
 └── styles/tailwind.css   # цвета и шрифт (@theme)
 ```
 

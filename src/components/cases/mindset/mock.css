@@ -1,0 +1,581 @@
+/*
+ * Элементы интерфейса приложения Mindset для макетов телефонов и примеров
+ * компонентов в кейсе. Цвета приложения сведены к палитре сайта:
+ * primary — фиолетовый бренда, ближайшее время — лаймовый акцент.
+ */
+.mm {
+  --mm-bg: var(--color-surface);
+  --mm-card: #fff;
+  --mm-ink: var(--color-ink);
+  --mm-mut: #6f6c7d;
+  --mm-line: #e7e4ef;
+  --mm-pri: var(--color-brand);
+  --mm-soft: #eee9fd;
+  --mm-slot: var(--color-accent);
+  --mm-ok: #2e9e6b;
+  --mm-err: #d9534a;
+}
+
+.mm-phone {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  aspect-ratio: 9 / 19;
+  overflow: hidden;
+  padding: 8px 12px 0;
+  border: 7px solid #15131f;
+  border-radius: 36px;
+  background: var(--mm-bg);
+  color: var(--mm-ink);
+  font-size: 12px;
+  line-height: 1.35;
+  box-shadow: 0 30px 60px -30px rgb(31 29 43 / 0.55);
+}
+
+.mm-phone > * {
+  flex: none;
+}
+
+.mm-sb {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.mm-sb i {
+  width: 38px;
+  height: 10px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--mm-ink) 70%, transparent 70%);
+  opacity: 0.8;
+}
+
+.mm-h {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mm-h b {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.mm-cnt {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--mm-soft);
+  color: var(--mm-pri);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.mm-nav {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.mm-lab {
+  color: var(--mm-mut);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.mm-search {
+  padding: 9px 10px;
+  border: 1px solid var(--mm-line);
+  border-radius: 12px;
+  background: var(--mm-card);
+  color: var(--mm-mut);
+  font-size: 11px;
+}
+
+.mm-chips {
+  display: flex;
+  gap: 5px;
+  overflow: hidden;
+}
+
+.mm-chips.wrap {
+  flex-wrap: wrap;
+}
+
+.mm-chips span {
+  padding: 5px 9px;
+  border: 1px solid var(--mm-line);
+  border-radius: 999px;
+  background: var(--mm-card);
+  font-size: 10.5px;
+  white-space: nowrap;
+}
+
+.mm-chips span.on {
+  border-color: var(--mm-pri);
+  background: var(--mm-pri);
+  color: #fff;
+}
+
+.mm-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 11px;
+  border: 1px solid var(--mm-line);
+  border-radius: 16px;
+  background: var(--mm-card);
+}
+
+.mm-card.hl {
+  border-color: var(--mm-pri);
+  box-shadow: 0 0 0 3px rgb(139 111 240 / 0.15);
+}
+
+.mm-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 9px;
+  align-items: center;
+}
+
+.mm-row > div {
+  min-width: 0;
+}
+
+/* Имя и подход — в одну строку, чтобы карточки в телефоне не росли */
+.mm-row b,
+.mm-row div span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mm-row b {
+  font-size: 12.5px;
+}
+
+.mm-row div span {
+  color: var(--mm-mut);
+  font-size: 10.5px;
+}
+
+/* Аватар-заглушка: голова и плечи из радиальных градиентов */
+.mm-ava {
+  display: inline-block;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.mm-ava.a {
+  background:
+    radial-gradient(circle at 50% 38%, #f3c7b0 26%, transparent 27%),
+    radial-gradient(circle at 50% 110%, #a995f5 52%, transparent 53%),
+    #eee9fd;
+}
+
+.mm-ava.b {
+  background:
+    radial-gradient(circle at 50% 38%, #e7b999 26%, transparent 27%),
+    radial-gradient(circle at 50% 110%, #6a5ab8 52%, transparent 53%),
+    #e7e4ef;
+}
+
+.mm-ava.c {
+  background:
+    radial-gradient(circle at 50% 38%, #f1cdb8 26%, transparent 27%),
+    radial-gradient(circle at 50% 110%, #c7c96a 52%, transparent 53%),
+    #f7fbd8;
+}
+
+.mm-ava.big {
+  width: 44px;
+  height: 44px;
+}
+
+.mm-rate {
+  padding: 3px 6px;
+  border-radius: 8px;
+  background: var(--mm-soft);
+  color: var(--mm-pri);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.mm-rate::before {
+  content: '★ ';
+}
+
+.mm-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.mm-tags span {
+  padding: 3px 6px;
+  border-radius: 6px;
+  background: var(--mm-soft);
+  font-size: 9.5px;
+}
+
+.mm-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid var(--mm-line);
+}
+
+.mm-foot b {
+  font-size: 13px;
+}
+
+.mm-slot {
+  padding: 3px 7px;
+  border-radius: 8px;
+  background: var(--mm-slot);
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.mm-tab {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: auto -12px 0;
+  padding: 10px 4px 18px;
+  border-top: 1px solid var(--mm-line);
+  background: var(--mm-card);
+}
+
+.mm-tab span {
+  position: relative;
+  padding-top: 20px;
+  color: var(--mm-mut);
+  font-size: 9.5px;
+  text-align: center;
+}
+
+.mm-tab span::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 18px;
+  height: 16px;
+  border-radius: 5px;
+  background: var(--mm-line);
+  transform: translateX(-50%);
+}
+
+.mm-tab span.on {
+  color: var(--mm-pri);
+  font-weight: 700;
+}
+
+.mm-tab span.on::before {
+  background: var(--mm-pri);
+}
+
+.mm-prof {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-align: center;
+}
+
+.mm-prof > b {
+  font-size: 17px;
+}
+
+.mm-prof > span {
+  color: var(--mm-mut);
+  font-size: 10.5px;
+}
+
+.mm-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  width: 100%;
+  margin-top: 2px;
+}
+
+.mm-stats div {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 4px;
+  border: 1px solid var(--mm-line);
+  border-radius: 10px;
+  background: var(--mm-card);
+}
+
+.mm-stats b {
+  font-size: 12px;
+}
+
+.mm-stats span {
+  color: var(--mm-mut);
+  font-size: 9px;
+}
+
+.mm-blk {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 7px 9px;
+  border-radius: 12px;
+  background: var(--mm-card);
+}
+
+.mm-txt {
+  font-size: 10.5px;
+}
+
+.mm-btn {
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--mm-pri);
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+}
+
+.mm-phone > .mm-btn {
+  margin: auto 0 14px;
+}
+
+.mm-btn.ghost {
+  border: 1.5px solid var(--mm-pri);
+  background: transparent;
+  color: var(--mm-pri);
+}
+
+.mm-mini {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px;
+  border-radius: 12px;
+  background: var(--mm-card);
+}
+
+.mm-mini b {
+  display: block;
+  font-size: 12px;
+}
+
+.mm-mini span {
+  color: var(--mm-mut);
+  font-size: 10.5px;
+}
+
+.mm-mini .mm-ava {
+  width: 30px;
+  height: 30px;
+}
+
+.mm-days {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+}
+
+.mm-days span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 0;
+  border: 1px solid var(--mm-line);
+  border-radius: 12px;
+  background: var(--mm-card);
+  color: var(--mm-mut);
+  font-size: 9.5px;
+}
+
+.mm-days b {
+  color: var(--mm-ink);
+  font-size: 14px;
+}
+
+.mm-days .on {
+  border-color: var(--mm-pri);
+  background: var(--mm-pri);
+  color: #eee9fd;
+}
+
+.mm-days .on b {
+  color: #fff;
+}
+
+.mm-days .off {
+  opacity: 0.4;
+}
+
+.mm-slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.mm-phone .mm-slots {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.mm-slots span {
+  padding: 8px 0;
+  border: 1px solid var(--mm-line);
+  border-radius: 10px;
+  background: var(--mm-card);
+  font-weight: 600;
+  text-align: center;
+}
+
+.mm-slots .on {
+  border-color: var(--mm-slot);
+  background: var(--mm-slot);
+}
+
+.mm-slots .off {
+  color: var(--mm-mut);
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.mm-note {
+  padding: 8px;
+  border-radius: 10px;
+  background: var(--mm-soft);
+  color: var(--mm-mut);
+  font-size: 10.5px;
+}
+
+.mm-ok {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 58px;
+  height: 58px;
+  margin-top: 24px;
+  border-radius: 50%;
+  background: var(--mm-soft);
+  color: var(--mm-pri);
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.mm-title {
+  font-size: 20px;
+  text-align: center;
+}
+
+.mm-sub {
+  color: var(--mm-mut);
+  font-size: 11.5px;
+  text-align: center;
+}
+
+.mm-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.mm-steps div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.mm-steps i {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--mm-soft);
+  color: var(--mm-pri);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* Ползунок цены: полоса с двумя ручками */
+.mm-range {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 30px;
+  color: var(--mm-mut);
+  font-size: 10px;
+}
+
+.mm-range i {
+  position: absolute;
+  top: 6px;
+  right: 10%;
+  left: 18%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--mm-pri);
+}
+
+.mm-range i::before,
+.mm-range i::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--mm-pri);
+  border-radius: 50%;
+  background: #fff;
+}
+
+.mm-range i::before {
+  left: -8px;
+}
+
+.mm-range i::after {
+  right: -8px;
+}
+
+.mm-states {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mm-states span {
+  padding: 9px 11px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.mm-states .load {
+  background: var(--mm-soft);
+  color: var(--mm-pri);
+}
+
+.mm-states .err {
+  background: #fbe7e5;
+  color: var(--mm-err);
+}
+
+.mm-states .ok {
+  background: #e2f4eb;
+  color: var(--mm-ok);
+}

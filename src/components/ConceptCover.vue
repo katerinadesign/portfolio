@@ -64,7 +64,9 @@ onBeforeUnmount(() => observer?.disconnect())
         preload="none"
         aria-hidden="true"
         class="block size-full object-cover"
-        :style="{ transform: `scale(${video.scale?.x ?? 1}, ${video.scale?.y ?? 1})` }"
+        :style="{
+          transform: `translate(${video.shift?.x ?? 0}%, ${video.shift?.y ?? 0}%) scale(${video.scale?.x ?? 1}, ${video.scale?.y ?? 1})`,
+        }"
       />
     </div>
   </div>

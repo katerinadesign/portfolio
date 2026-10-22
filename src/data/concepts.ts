@@ -1,3 +1,5 @@
+import type { RouteLocationRaw } from 'vue-router'
+
 export interface ConceptSection {
   title: string
   text: string
@@ -17,6 +19,8 @@ export interface ConceptImageVideo {
    * (по умолчанию 1). Раздельно, чтобы не срезать лишнее сверху, где рамка тоньше
    */
   scale?: { x: number; y: number }
+  /** Сдвиг видео внутри рамки, в % от его размера — если в записи экран сидит не по центру */
+  shift?: { x: number; y: number }
 }
 
 export interface ConceptImage {
@@ -27,10 +31,10 @@ export interface ConceptImage {
   /** Видео поверх отдельных экранов на картинке */
   videos?: ConceptImageVideo[]
   /**
-   * Как показывать в галерее страницы концепта: 'phone' — один экран по центру карточки
-   * (по умолчанию), 'full' — картинка во всю ширину (например, несколько экранов)
+   * Область с экранами на картинке, в процентах (без белых полей вокруг). На странице
+   * концепта она растягивается на всю высоту карточки. По умолчанию — вся картинка
    */
-  layout?: 'phone' | 'full'
+  content?: { x: number; y: number; w: number; h: number }
 }
 
 export interface Concept {
@@ -47,6 +51,8 @@ export interface Concept {
   /** Дополнительные экраны на странице концепта (без подписей), идут сразу после обложки */
   gallery?: ConceptImage[]
   sections: ConceptSection[]
+  /** Имя маршрута отдельной страницы кейса — вместо стандартной страницы концепта */
+  route?: string
 }
 
 // TODO: моки — заменить реальными концептами, обложками и описаниями
@@ -64,20 +70,23 @@ export const concepts: Concept[] = [
     platform: 'iOS',
     cover: 'from-accent/60 to-white',
     image: {
+      // Экспорт секции из Figma в 2x (3010×2088) без серой обводки 2px по краю
       src: 'images/concepts/peco-screens.jpg',
-      width: 1992,
-      height: 1379,
+      width: 3006,
+      height: 2084,
       alt: 'Три экрана приложения PECO: тест воздуха, статус фильтра и заказ фильтра',
+      // от левого края первого телефона до правого края третьего, по высоте телефонов
+      content: { x: 6.59, y: 9.5, w: 86.83, h: 81 },
       videos: [
         // Запись анимации среднего экрана. Положение — из Figma:
         // экран 390×844 с радиусом 48 в секции 1505×1044 (x 540, y 100);
-        // картинка — секция в масштабе ×1.3289 с обрезкой 4px по краям
+        // картинка — секция в масштабе ×2 со сдвигом 2px (обрезана обводка)
         {
           src: 'videos/peco-filter-status.mp4',
-          left: 35.82,
-          top: 9.35,
-          width: 26.02,
-          height: 81.33,
+          left: 35.86,
+          top: 9.5,
+          width: 25.95,
+          height: 81,
           radius: '12.3% / 5.69%',
           // в записи тёмная рамка ~6px по бокам (0.9% ширины) и ~5px сверху/снизу (0.3% высоты)
           scale: { x: 1.025, y: 1.008 },
@@ -99,6 +108,8 @@ export const concepts: Concept[] = [
             width: 100,
             height: 100,
             radius: '12.31% / 5.69%',
+            // в записи экран на 4px выше и на 1px левее, чем на картинке (при 390×844)
+            shift: { x: 0.26, y: 0.47 },
           },
         ],
       },
@@ -107,7 +118,8 @@ export const concepts: Concept[] = [
         width: 2000,
         height: 1420,
         alt: 'Три экрана финансового приложения Beyond: приветствие, карты и история, перевод',
-        layout: 'full',
+        // телефоны: x 81…1918, y 136…1283 из 2000×1420
+        content: { x: 4.05, y: 9.58, w: 91.85, h: 80.85 },
         // Записи анимаций всех трёх экранов. Положение замерено по картинке:
         // телефоны 532×1148 в точках (81, 136), (734, 136) и (1387, 136), радиус углов ~65px
         // (48px из Figma в масштабе)
@@ -141,6 +153,17 @@ export const concepts: Concept[] = [
     ],
     // TODO: описание итога
     sections: mockSections.filter((section) => section.title === 'Итог'),
+  },
+  {
+    // Отдельная страница кейса (views/MindsetView.vue), секции не нужны
+    slug: 'mindset',
+    title: 'Mindset',
+    year: '2025', // TODO: уточнить год
+    platform: 'iOS, Android',
+    cover: 'from-brand/40 to-accent/70',
+    // TODO: обложка для карточки на главной
+    sections: [],
+    route: 'mindset',
   },
   {
     slug: 'meditation',
@@ -188,3 +211,8 @@ export const concepts: Concept[] = [
     sections: mockSections,
   },
 ]
+
+/** Ссылка на страницу проекта: отдельный кейс или стандартная страница концепта */
+export function conceptLink(concept: Concept): RouteLocationRaw {
+  return concept.route ? { name: concept.route } : { name: 'concept', params: { slug: concept.slug } }
+}

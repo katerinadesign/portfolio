@@ -29,6 +29,12 @@ const router = createRouter({
       props: true,
     },
     {
+      // Кейсы с собственной вёрсткой страницы
+      path: '/projects/mindset',
+      name: 'mindset',
+      component: () => import('@/views/MindsetView.vue'),
+    },
+    {
       // Заглушка для несуществующих маршрутов
       path: '/:pathMatch(.*)*',
       name: 'not-found',

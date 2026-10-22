@@ -2,24 +2,25 @@
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import Pill from '@/components/Pill.vue'
-import ConceptCover from '@/components/ConceptCover.vue'
+import ConceptStage from '@/components/ConceptStage.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
-import { concepts } from '@/data/concepts'
+import { concepts as allConcepts } from '@/data/concepts'
 
 const props = defineProps<{ slug: string }>()
+
+// Проекты с отдельной страницей кейса (Mindset) здесь не показываются
+const concepts = allConcepts.filter((c) => !c.route)
 
 const index = computed(() => concepts.findIndex((c) => c.slug === props.slug))
 const concept = computed(() => concepts[index.value])
 const next = computed(() => concepts[(index.value + 1) % concepts.length])
-
-
 </script>
 
 <template>
   <NotFoundView v-if="!concept" />
 
-  <article v-else class="mx-auto flex w-full max-w-page flex-col gap-2">
-    <section class="flex flex-col gap-8 rounded-[32px] bg-brand p-5 text-white sm:p-6">
+  <article v-else class="flex w-full flex-col gap-2">
+    <section class="mx-auto flex w-full max-w-page flex-col gap-8 rounded-[32px] bg-brand p-5 text-white sm:p-6">
       <Pill :to="{ name: 'home', hash: '#projects' }" medium class="self-start">
         ← Все проекты
       </Pill>
@@ -38,42 +39,25 @@ const next = computed(() => concepts[(index.value + 1) % concepts.length])
       </div>
     </section>
 
-    <div class="overflow-hidden rounded-[32px]">
-      <ConceptCover v-if="concept.image" :image="concept.image" class="bg-white" />
-      <div
-        v-else
-        class="flex h-64 items-center justify-center bg-linear-to-br sm:h-[420px]"
-        :class="concept.cover"
-      >
-        <span class="rounded-full bg-white/70 px-3 py-1 text-xs font-medium text-ink/60">
-          Главный экран концепта
-        </span>
-      </div>
+    <!-- Экраны концепта — шире колонки текста, до 1040px -->
+    <ConceptStage v-if="concept.image" :image="concept.image" />
+    <div
+      v-else
+      class="mx-auto flex h-64 w-full max-w-page items-center justify-center rounded-[32px] bg-linear-to-br sm:h-[420px]"
+      :class="concept.cover"
+    >
+      <span class="rounded-full bg-white/70 px-3 py-1 text-xs font-medium text-ink/60">
+        Главный экран концепта
+      </span>
     </div>
 
-    <!--
-      Дополнительные экраны концепта — без подписей.
-      layout 'full' — картинка во всю ширину; иначе — один экран: карточка в пропорциях
-      обложки PECO (1992×1379), телефон по центру занимает 81.33% её высоты, как на обложке
-    -->
-    <template v-for="shot in concept.gallery" :key="shot.src">
-      <div v-if="shot.layout === 'full'" class="overflow-hidden rounded-[32px] bg-white">
-        <ConceptCover :image="shot" lazy />
-      </div>
-      <div v-else class="relative aspect-[1992/1379] rounded-[32px] bg-white">
-        <div
-          class="absolute top-1/2 left-1/2 h-[81.33%] -translate-x-1/2 -translate-y-1/2"
-          :style="{ aspectRatio: `${shot.width} / ${shot.height}` }"
-        >
-          <ConceptCover :image="shot" lazy />
-        </div>
-      </div>
-    </template>
+    <!-- Дополнительные экраны концепта — без подписей -->
+    <ConceptStage v-for="shot in concept.gallery" :key="shot.src" :image="shot" lazy />
 
     <section
       v-for="section in concept.sections"
       :key="section.title"
-      class="grid gap-4 rounded-[32px] bg-white p-5 text-ink sm:p-6 md:grid-cols-12"
+      class="mx-auto grid w-full max-w-page gap-4 rounded-[32px] bg-white p-5 text-ink sm:p-6 md:grid-cols-12"
     >
       <h2 class="text-2xl leading-8 font-semibold md:col-span-4">{{ section.title }}</h2>
       <div class="flex flex-col gap-4 md:col-span-8">
@@ -87,7 +71,7 @@ const next = computed(() => concepts[(index.value + 1) % concepts.length])
     <RouterLink
       v-if="next && next.slug !== concept.slug"
       :to="{ name: 'concept', params: { slug: next.slug } }"
-      class="group flex items-center justify-between gap-4 rounded-[32px] bg-brand p-5 text-white transition hover:brightness-105 sm:p-6"
+      class="group mx-auto flex w-full max-w-page items-center justify-between gap-4 rounded-[32px] bg-brand p-5 text-white transition hover:brightness-105 sm:p-6"
     >
       <span>
         <span class="block text-[13px] font-medium text-white/70 sm:text-sm">Следующий концепт</span>
