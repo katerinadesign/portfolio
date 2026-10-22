@@ -155,17 +155,6 @@ export const concepts: Concept[] = [
     sections: mockSections.filter((section) => section.title === 'Итог'),
   },
   {
-    // Отдельная страница кейса (views/MindsetView.vue), секции не нужны
-    slug: 'mindset',
-    title: 'Mindset',
-    year: '2025', // TODO: уточнить год
-    platform: 'iOS, Android',
-    cover: 'from-brand/40 to-accent/70',
-    // TODO: обложка для карточки на главной
-    sections: [],
-    route: 'mindset',
-  },
-  {
     slug: 'meditation',
     title: 'Медитации',
     summary: 'Приложение для ежедневных практик',
@@ -173,6 +162,23 @@ export const concepts: Concept[] = [
     platform: 'iOS, Android',
     cover: 'from-accent to-brand/30',
     sections: mockSections,
+  },
+  {
+    // Отдельная страница кейса (views/MindsetView.vue), секции не нужны.
+    // Третьим в списке — в сетке встаёт в широкую колонку под карточкой «Концепты»
+    slug: 'mindset',
+    title: 'Mindset',
+    year: '2025', // TODO: уточнить год
+    platform: 'iOS, Android',
+    cover: 'from-brand/40 to-accent/70',
+    image: {
+      src: 'images/concepts/mindset-cover.webp',
+      width: 2000,
+      height: 1188,
+      alt: 'Обложка проекта Mind Care: главный экран приложения с уведомлением о сессии',
+    },
+    sections: [],
+    route: 'mindset',
   },
   {
     slug: 'fintech-dashboard',

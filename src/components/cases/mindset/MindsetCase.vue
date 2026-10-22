@@ -114,23 +114,22 @@ const principles = [
   },
 ]
 
-// Ключевые шаги сценария выделены цветом
 const flow = [
-  { label: 'Онбординг', key: false },
-  { label: 'Регистрация', key: false },
-  { label: 'Каталог', key: true },
-  { label: 'Профиль', key: true },
-  { label: 'Дата и время', key: true },
-  { label: 'Оплата', key: true },
-  { label: 'Видеоконсультация', key: false },
-  { label: 'Оценка', key: false },
+  'Онбординг',
+  'Регистрация',
+  'Каталог',
+  'Профиль',
+  'Дата и время',
+  'Оплата',
+  'Видеоконсультация',
+  'Оценка',
 ]
 
 const navTabs = [
-  { title: 'Главная', text: 'вход в сценарии и ближайшая сессия', on: false },
-  { title: 'Каталог', text: 'поиск, фильтры, выбор психолога', on: true },
-  { title: 'Чат', text: 'общение со специалистом и ссылка на видео', on: false },
-  { title: 'Аккаунт', text: 'данные и записи', on: false },
+  { title: 'Главная', text: 'вход в сценарии и ближайшая сессия' },
+  { title: 'Каталог', text: 'поиск, фильтры, выбор психолога' },
+  { title: 'Чат', text: 'общение со специалистом и ссылка на видео' },
+  { title: 'Аккаунт', text: 'данные и записи' },
 ]
 
 const solutions: {
@@ -259,11 +258,8 @@ const metrics = [
 </script>
 
 <template>
-  <!--
-    Шапка кейса: фиолетовая карточка с экранами записи и ключевыми цифрами.
-    Все блоки кейса шире колонки текста (до 1040px, как экраны концептов), чтобы телефоны не были мелкими
-  -->
-  <section class="mx-auto flex w-full max-w-[1040px] flex-col gap-8 rounded-[32px] bg-brand p-5 text-white sm:gap-10 sm:p-6">
+  <!-- Шапка кейса: фиолетовая карточка шириной с шапку сайта -->
+  <section class="mx-auto flex w-full max-w-page flex-col gap-8 rounded-[32px] bg-brand p-5 text-white sm:p-6">
     <Pill :to="{ name: 'home', hash: '#projects' }" medium class="self-start">
       ← Все проекты
     </Pill>
@@ -278,7 +274,7 @@ const metrics = [
         Пользователи терялись среди специалистов и откладывали запись. Я перестроила каталог, карточку
         психолога и запись так, чтобы решение принималось в одном месте
       </p>
-      <div class="flex flex-wrap gap-0.5">
+      <div class="mt-8 flex flex-wrap gap-0.5">
         <span
           v-for="chip in ['Product Designer — единственный дизайнер', 'Discovery · CJM · JTBD · UI · дизайн-система · Design QA', 'Команда: PM и разработчики']"
           :key="chip"
@@ -288,7 +284,16 @@ const metrics = [
         </span>
       </div>
     </div>
+  </section>
 
+  <!--
+    Экраны записи и ключевые цифры. Этот и следующие блоки шире колонки текста
+    (до 1040px, как экраны концептов), чтобы телефоны не были мелкими
+  -->
+  <section
+    class="mx-auto flex w-full max-w-[1040px] flex-col gap-8 rounded-[32px] bg-white p-5 text-ink sm:gap-10 sm:p-6"
+    aria-label="Экраны и результаты"
+  >
     <!-- На узком экране телефоны листаются вбок -->
     <div class="-mx-5 overflow-x-auto px-5 pb-2 sm:-mx-6 sm:px-6">
       <div class="grid grid-cols-[repeat(4,minmax(210px,1fr))] gap-4">
@@ -296,10 +301,10 @@ const metrics = [
       </div>
     </div>
 
-    <dl class="grid grid-cols-2 gap-x-3 border-t border-white/20 md:grid-cols-4">
+    <dl class="grid grid-cols-2 gap-x-3 border-t border-ink/10 md:grid-cols-4">
       <div v-for="kpi in kpis" :key="kpi.value" class="flex flex-col gap-1 pt-4 pr-3">
-        <dt class="order-2 text-[13px] leading-snug text-white/70">{{ kpi.text }}</dt>
-        <dd class="order-1 text-[22px] font-bold tracking-[-0.02em] text-accent tabular-nums sm:text-[28px]">
+        <dt class="order-2 text-[13px] leading-snug text-ink/60">{{ kpi.text }}</dt>
+        <dd class="order-1 text-[22px] font-bold tracking-[-0.02em] text-brand tabular-nums sm:text-[28px]">
           {{ kpi.value }}
         </dd>
       </div>
@@ -451,24 +456,14 @@ const metrics = [
   <CaseSection id="flow" num="05" kicker="Проектирование сценариев" title="От потребности до консультации">
     <div class="-mx-5 overflow-x-auto px-5 pb-4 sm:-mx-6 sm:px-6">
       <ol class="flex min-w-max items-center gap-1.5">
-        <template v-for="(step, i) in flow" :key="step.label">
-          <li
-            class="rounded-xl px-3 py-2 text-[13px]"
-            :class="step.key ? 'bg-brand font-semibold text-white' : 'bg-surface'"
-          >
-            {{ step.label }}
-          </li>
+        <template v-for="(step, i) in flow" :key="step">
+          <li class="rounded-xl bg-surface px-3 py-2 text-[13px]">{{ step }}</li>
           <li v-if="i < flow.length - 1" class="text-ink/40" aria-hidden="true">→</li>
         </template>
       </ol>
     </div>
     <div class="grid grid-cols-2 gap-2 md:grid-cols-4">
-      <div
-        v-for="tab in navTabs"
-        :key="tab.title"
-        class="flex flex-col gap-1 rounded-2xl bg-surface p-4"
-        :class="{ 'ring-2 ring-brand ring-inset': tab.on }"
-      >
+      <div v-for="tab in navTabs" :key="tab.title" class="flex flex-col gap-1 rounded-2xl bg-surface p-4">
         <b class="text-[15px]">{{ tab.title }}</b>
         <span class="text-[13px] leading-snug text-ink/60">{{ tab.text }}</span>
       </div>
