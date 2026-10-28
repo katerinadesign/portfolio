@@ -150,6 +150,13 @@ export const concepts: Concept[] = [
           },
         ],
       },
+      {
+        // Главная сайта quari — экспорт фрейма 1440×1070 из Figma в 2x
+        src: 'images/concepts/quari-site.jpg',
+        width: 2880,
+        height: 2140,
+        alt: 'Главная страница сайта финансового сервиса quari',
+      },
     ],
     // TODO: описание итога
     sections: mockSections.filter((section) => section.title === 'Итог'),
