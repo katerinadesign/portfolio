@@ -1,642 +1,678 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import Pill from '@/components/Pill.vue'
-import CaseSection from '@/components/cases/CaseSection.vue'
 import MindsetPhone, { type MindsetScreen } from '@/components/cases/mindset/MindsetPhone.vue'
-import './mock.css'
+import './board.css'
 
-/** Кейс Mindset: от выбора психолога до первой консультации */
+/**
+ * Кейс Mindset: от выбора психолога до первой консультации.
+ * Длинная доска из разделов; заглушки [в скобках] нужно заменить реальными данными
+ */
 
-// Общие классы: подпись-рубрика, плитка внутри раздела, приглушённый текст
-const kick = 'text-[11px] font-semibold tracking-[0.07em] uppercase'
-const tile = 'flex min-w-0 flex-col gap-2.5 rounded-[20px] bg-surface p-5'
-const muted = 'text-[15px] leading-normal text-ink/60'
-const list = 'flex list-disc flex-col gap-1.5 pl-5 text-[15px] leading-normal'
-
-const heroScreens: MindsetScreen[] = ['catalog', 'profile', 'booking', 'done']
-
-const kpis = [
-  { value: '18% → 27%', text: 'конверсия из регистрации в первую запись, +9 п.п.' },
-  { value: '6 → 3 мин', text: 'от регистрации до записи, −50%' },
-  { value: '−35%', text: 'обращений в поддержку по первой консультации' },
-  { value: '~80', text: 'экранов и состояний интерфейса' },
-]
-
-const toc = [
-  { id: 'discovery', label: 'Discovery' },
-  { id: 'problem', label: 'Проблема' },
+const nav = [
+  { id: 'overview', label: 'о проекте' },
+  { id: 'discovery', label: 'discovery' },
   { id: 'jtbd', label: 'JTBD' },
-  { id: 'strategy', label: 'Стратегия' },
-  { id: 'flow', label: 'Сценарии' },
-  { id: 'solution', label: 'Решения' },
-  { id: 'ds', label: 'Дизайн-система' },
-  { id: 'team', label: 'Команда' },
-  { id: 'results', label: 'Результаты' },
-  { id: 'next', label: 'Выводы' },
+  { id: 'strategy', label: 'стратегия' },
+  { id: 'flow', label: 'сценарии' },
+  { id: 'solution', label: 'решения' },
+  { id: 'ds', label: 'дизайн-система' },
+  { id: 'results', label: 'результаты' },
 ]
 
-const research = [
-  {
-    kicker: 'Конкурентный анализ',
-    title: '«Ясно», «Грань», Zigmund.Online',
-    points: [
-      'Как находят специалиста под запрос',
-      'Что видно в каталоге и в профиле',
-      'Как устроены фильтры и сравнение',
-      'Когда показывают цену и свободные слоты',
-      'Сколько действий до записи',
-    ],
-  },
-  {
-    kicker: 'Интервью',
-    title: '12–15 пользователей сервисов онлайн-психотерапии',
-    points: [
-      'Прошлый опыт и частота',
-      'Критерии выбора специалиста',
-      'Отношение к стоимости',
-      'Важность квалификации',
-      'Почему откладывают запись',
-    ],
-  },
-]
+const competitors = ['«Ясно»', '«Грань»', 'Zigmund.Online']
 
 const insights = [
   {
-    title: 'Сложно выбирать среди многих',
-    text: 'Когда различия неочевидны, пользователь сам собирает информацию из нескольких профилей и держит её в голове',
-    solution: 'Фильтры по запросу, цене и времени',
+    title: 'Психологи выглядят одинаково',
+    text: 'Человек открывает несколько профилей и сравнивает их в голове. Выбор утомляет, запись откладывается',
+    to: 'Фильтры по запросу, цене и времени',
   },
   {
     title: 'Доверие строится на квалификации',
     text: 'Фото и короткого описания мало. Важны специализация, опыт, образование, подход и отзывы',
-    solution: 'Структурированный профиль специалиста',
+    to: 'Профиль из смысловых блоков',
   },
   {
-    title: 'Цена и время решают ещё до записи',
-    text: 'Если их видно только внутри профиля или позже, пользователь делает лишние действия и откладывает решение',
-    solution: 'Цена и ближайшее время прямо в карточке каталога',
+    title: 'Цена и время отсеивают раньше всего',
+    text: 'Если их видно только в профиле, человек делает лишние действия и откладывает решение',
+    to: 'Цена и ближайшее время в карточке',
   },
 ]
 
 const questions = [
-  { title: 'Подходит ли мне этот специалист?', where: 'Каталог и фильтры' },
-  { title: 'Могу ли я доверять его квалификации?', where: 'Профиль' },
-  { title: 'Подходят ли цена и время?', where: 'Карточка и запись' },
+  { q: 'Подходит ли мне этот специалист?', where: 'Каталог и фильтры' },
+  { q: 'Могу ли я доверять его квалификации?', where: 'Профиль' },
+  { q: 'Подходят ли цена и время?', where: 'Карточка и запись' },
 ]
 
-const problemTiles = [
+const jobs = [
   {
-    kicker: 'Проблема бизнеса',
-    text: 'Первая запись — ключевое целевое действие. Сложный выбор и лишние шаги при бронировании теряли пользователей до первой консультации',
+    kicker: 'Вторичный JTBD',
+    text: 'Когда я выбрала психолога, я хочу видеть время, стоимость и понятные шаги записи, чтобы записаться самой',
   },
   {
-    kicker: 'Гипотеза',
-    text: 'Если помочь быстрее находить подходящих психологов, показывать ключевые критерии раньше и упростить бронирование, больше людей завершат первую запись',
+    kicker: 'Функциональная задача',
+    text: 'Найти психолога с подходящей специализацией, квалификацией, стоимостью и временем',
   },
   {
-    kicker: 'Дизайн-задача',
-    text: 'Сквозной сценарий: найти, сравнить, оценить квалификацию и условия, выбрать время, оплатить и подключиться. Баланс между полнотой информации и простотой',
+    kicker: 'Эмоциональная задача',
+    text: 'Почувствовать уверенность в выборе и снизить тревогу перед первой консультацией',
+  },
+]
+
+const options = [
+  {
+    status: 'Рассматривали',
+    title: 'Персональный подбор через анкету',
+    plus: ['Помогает тем, кто не знает, кого выбрать'],
+    minus: ['Нужна логика подбора и рекомендаций', 'Не укладывается в сроки'],
+    why: 'Оставили на следующие версии',
+    pick: false,
+  },
+  {
+    status: 'Выбрали',
+    title: 'Каталог с фильтрами и информативными профилями',
+    plus: ['Закрывает все три инсайта', 'Пользователь сам управляет выбором', 'Укладывается в MVP'],
+    minus: [],
+    why: 'Подбор можно добавить поверх каталога позже',
+    pick: true,
   },
 ]
 
 const principles = [
-  {
-    title: 'Снизить сложность поиска',
-    text: 'Сузить выбор по специализации, стоимости и времени вместо просмотра всего каталога',
-  },
-  {
-    title: 'Информация — к моменту решения',
-    text: 'Цена и ближайшее время в каталоге, квалификация — в структурированном профиле',
-  },
-  {
-    title: 'Запись последовательная',
-    text: 'После выбора — время и оплата, без возврата к поиску условий',
-  },
+  { title: 'Сузить выбор', text: 'Фильтры по запросу, стоимости и времени вместо всего каталога' },
+  { title: 'Информация — к моменту решения', text: 'Цена и время — в каталоге, квалификация — в профиле' },
+  { title: 'Запись без возвратов', text: 'После выбора — только время и оплата' },
 ]
 
+// Шаги сценария; key — те, что перестраивали
 const flow = [
-  'Онбординг',
-  'Регистрация',
-  'Каталог',
-  'Профиль',
-  'Дата и время',
-  'Оплата',
-  'Видеоконсультация',
-  'Оценка',
+  { step: 'Онбординг' },
+  { step: 'Регистрация' },
+  { step: 'Каталог', key: true },
+  { step: 'Профиль', key: true },
+  { step: 'Дата и время', key: true },
+  { step: 'Оплата', key: true },
+  { step: 'Видеосессия' },
+  { step: 'Оценка' },
 ]
 
 const navTabs = [
   { title: 'Главная', text: 'вход в сценарии и ближайшая сессия' },
   { title: 'Каталог', text: 'поиск, фильтры, выбор психолога' },
-  { title: 'Чат', text: 'общение со специалистом и ссылка на видео' },
+  { title: 'Чат', text: 'общение и ссылка на видео' },
   { title: 'Аккаунт', text: 'данные и записи' },
 ]
 
-const solutions: {
-  screen: MindsetScreen
-  kicker: string
-  title: string
-  points: { title: string; text: string }[]
-}[] = [
+const solutions: { screen: MindsetScreen; label: string; title: string; points: { b: string; t?: string }[] }[] = [
   {
     screen: 'filters',
-    kicker: 'Решение 1 · Каталог',
+    label: '01 · Каталог',
     title: 'Сузить выбор вместо просмотра всех',
     points: [
-      {
-        title: 'Три фильтра, которые важны людям.',
-        text: 'Запрос, стоимость и время — критерии из интервью, а не из базы данных',
-      },
-      {
-        title: 'Число результатов на кнопке.',
-        text: '«Показать 12 психологов» — видно, к чему приведёт фильтр',
-      },
-      {
-        title: 'Упростили после теста.',
-        text: 'Убрали лишние параметры, частые запросы вынесли чипсами над каталогом',
-      },
+      { b: 'Три фильтра, важные людям:', t: 'запрос, стоимость, время' },
+      { b: 'Число результатов на кнопке', t: '— видно, к чему приведёт фильтр' },
+      { b: 'Упростили после теста:', t: 'частые запросы — чипсами' },
     ],
   },
   {
-    screen: 'filtered',
-    kicker: 'Решение 2 · Карточка',
+    screen: 'catalog',
+    label: '02 · Карточка',
     title: 'Сравнить, не открывая профиль',
     points: [
-      {
-        title: 'Иерархия по интервью.',
-        text: 'Имя, подход и опыт → специализации → ближайшее время и цена',
-      },
-      {
-        title: 'Цена и время внизу карточки.',
-        text: 'Одинаковое место в каждой карточке — глаз сравнивает по вертикали',
-      },
-      {
-        title: 'Подробности — в профиль.',
-        text: 'Меньше открываний карточек и возвратов в каталог',
-      },
-    ],
-  },
-  {
-    screen: 'booking',
-    kicker: 'Решение 3 · Запись',
-    title: 'Линейный сценарий без возвратов',
-    points: [
-      {
-        title: 'Профиль → Дата и время → Оплата → Подтверждение.',
-        text: 'Ни одного шага назад к поиску условий',
-      },
-      {
-        title: 'Психолог и цена всегда на виду.',
-        text: 'Мини-карточка сверху подтверждает, к кому и за сколько записываешься',
-      },
-      {
-        title: 'Что будет дальше — до оплаты.',
-        text: 'Где пройдёт сессия и когда придёт ссылка. Отсюда меньше вопросов в поддержку',
-      },
+      { b: 'Иерархия по интервью:', t: 'имя, подход и опыт → специализации → время и цена' },
+      { b: 'Цена и время в одном месте', t: 'каждой карточки' },
+      { b: 'Подробности — в профиль' },
     ],
   },
   {
     screen: 'profile',
-    kicker: 'Решение 4 · Профиль',
-    title: 'Квалификация по смысловым блокам',
+    label: '03 · Профиль',
+    title: 'Квалификация смысловыми блоками',
     points: [
-      {
-        title: 'Сначала главное.',
-        text: 'Рейтинг, опыт и цена — тремя цифрами в шапке',
-      },
-      {
-        title: 'Потом подробности.',
-        text: 'Специализации, образование, подход, курсы и отзывы — отдельными блоками',
-      },
-      {
-        title: 'Кнопка с ближайшим временем.',
-        text: '«Записаться · сегодня в 19:00» снимает ещё один вопрос до записи',
-      },
+      { b: 'Сначала главное:', t: 'рейтинг, опыт и цена в шапке' },
+      { b: 'Потом подробности:', t: 'специализации, образование, отзывы' },
+      { b: 'Кнопка с ближайшим временем' },
+    ],
+  },
+  {
+    screen: 'booking',
+    label: '04 · Запись',
+    title: 'Линейный сценарий без возвратов',
+    points: [
+      { b: 'Профиль → время → оплата → готово' },
+      { b: 'Психолог и цена всегда на виду', t: 'в мини-карточке' },
+      { b: 'Что будет дальше — до оплаты' },
     ],
   },
 ]
 
-const tokens = [
-  { name: 'primary', text: 'CTA и активные состояния', color: 'var(--mm-pri)' },
-  { name: 'surface/soft', text: 'чипсы и фон блоков', color: 'var(--mm-soft)' },
-  { name: 'accent/slot', text: 'ближайшее время', color: 'var(--mm-slot)' },
-  { name: 'success', text: 'запись и оплата', color: 'var(--mm-ok)' },
-  { name: 'error', text: 'ошибки оплаты', color: 'var(--mm-err)' },
-  { name: 'text/primary', text: 'основной текст', color: 'var(--mm-ink)' },
+const palette = [
+  { color: 'var(--color-brand)', name: 'primary', text: 'кнопки и акценты' },
+  { color: 'var(--mb-soft)', name: 'surface/soft', text: 'чипсы, фон блоков' },
+  { color: 'var(--mb-g1)', name: 'gradient/trust', text: 'психолог, доверие' },
+  { color: 'var(--mb-g2)', name: 'gradient/choice', text: 'выбор и фильтры' },
+  { color: 'var(--mb-g5)', name: 'gradient/success', text: 'время и запись' },
+  { color: 'var(--mb-g4)', name: 'gradient/alert', text: 'ошибки и срочное' },
 ]
 
-// Шаг, за который отвечала я, выделен цветом
-const process = [
-  { label: 'Гипотезы с PM', mine: false },
-  { label: 'Приоритеты MVP', mine: false },
-  { label: 'Макеты и состояния', mine: true },
-  { label: 'Передача в разработку', mine: false },
-  { label: 'Design QA', mine: false },
-  { label: 'App Store и Google Play', mine: false },
-  { label: '100% пользователей', mine: false },
+const voice = [
+  { was: 'Ошибка платежа', now: 'Оплата не прошла. Деньги не списаны' },
+  { was: 'Слотов нет', now: 'Ближайшее время — завтра в 10:00' },
+  { was: 'Бронирование подтверждено', now: 'Вы записаны. Ссылка придёт в чат' },
 ]
 
-const teamTiles = [
+const pipeline = [
+  'Гипотезы с PM',
+  'Приоритеты MVP',
+  'Макеты и состояния',
+  'Передача в разработку',
+  'Design QA',
+  'App Store и Google Play',
+  '100% пользователей',
+]
+
+const team = [
   {
-    kicker: 'С Product Manager',
+    title: 'С Product Manager',
     text: 'Обсуждали гипотезы и требования, сопоставляли ценность решений со сроками и объёмом MVP',
   },
   {
-    kicker: 'С разработкой',
-    text: 'Компоненты в Figma с описанием поведения и состояний: загрузка, ошибки, подтверждение операций',
+    title: 'С разработкой',
+    text: 'Компоненты в Figma с описанием поведения и состояний: загрузка, ошибки, подтверждение',
   },
   {
-    kicker: 'Design QA',
-    text: 'Проверяла типографику, цвета, отступы и состояния, проходила поиск, выбор времени и запись. Расхождения передавала на исправление',
+    title: 'Design QA',
+    text: 'Проверяла типографику, цвета, отступы и состояния, проходила поиск, выбор времени и запись',
   },
 ]
 
 const metrics = [
-  { title: 'Время до записи', value: '6 → 3 мин', text: 'от регистрации до записи, вдвое быстрее' },
-  { title: 'Обращения в поддержку', value: '−35%', text: 'по вопросам первой консультации' },
+  { label: 'Конверсия в первую запись', value: '18% → 27%', note: '+9 п.п., или +50%', key: true },
+  { label: 'Время до записи', value: '6 → 3 мин', note: 'вдвое быстрее' },
+  { label: 'Обращения в поддержку', value: '−35%', note: 'по первой консультации' },
+]
+
+const links = [
+  { title: 'Конверсия', text: 'Фильтры и карточка с ценой и временем' },
+  { title: 'Время', text: 'Линейная запись без возвратов' },
+  { title: 'Поддержка', text: '«Что будет дальше» до оплаты и понятные ошибки' },
 ]
 </script>
 
 <template>
-  <!-- Шапка кейса: фиолетовая карточка шириной с шапку сайта -->
-  <section class="mx-auto flex w-full max-w-page flex-col gap-8 rounded-[32px] bg-brand p-5 text-white sm:p-6">
-    <Pill :to="{ name: 'home', hash: '#projects' }" medium class="self-start">
-      ← Все проекты
-    </Pill>
+  <div class="mb">
+    <!-- Обложка: заголовок, большой телефон с каталогом, ключевые факты -->
+    <section class="mb-cover">
+      <div class="mb-cv-left">
+        <div class="flex flex-col items-start gap-5">
+          <Pill :to="{ name: 'home', hash: '#projects' }" variant="light" medium class="bg-surface!">
+            ← Все проекты
+          </Pill>
+          <div class="mb-cv-brand">Mindset Case Study</div>
+        </div>
+        <h1 class="mb-cv-h">От выбора психолога <span>до первой консультации за 3 минуты</span></h1>
+        <div class="mb-cv-foot">Mental <b>HealthTech</b></div>
+      </div>
 
-    <div class="flex max-w-[820px] flex-col gap-4">
-      <span :class="kick" class="text-accent">Mindset · Mental HealthTech · B2C · iOS и Android</span>
-      <h1 class="text-[32px] leading-[1.1] font-bold tracking-[-0.02em] sm:text-5xl">
-        От выбора психолога до первой консультации
-      </h1>
-      <p class="max-w-[680px] text-base leading-snug font-medium text-white/85 sm:text-xl sm:leading-7">
-        Мобильное приложение для онлайн-консультаций с психологами — с нуля и до публикации в сторах.
-        Пользователи терялись среди специалистов и откладывали запись. Я перестроила каталог, карточку
-        психолога и запись так, чтобы решение принималось в одном месте
+      <div class="mb-cv-phone mb-bigph" role="img" aria-label="Каталог психологов в приложении Mindset">
+        <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+        <h4>Психологи</h4>
+        <div class="mb-grid4">
+          <div class="mb-gt t1">
+            Анна Лебедева<small>КПТ · 7 лет</small>
+            <div class="big">4,9</div>
+            <div class="ticks"></div>
+            <div class="ft"><span>Сегодня 19:00</span></div>
+          </div>
+          <div class="mb-gt t2">
+            Стоимость<small>до 3 000 ₽</small>
+            <div class="big">2800<sup>₽</sup></div>
+            <div class="ticks"></div>
+            <div class="ft"><span>50 минут</span><span>сессия</span></div>
+          </div>
+          <div class="mb-gt t3">
+            Опыт<small>практики</small>
+            <div class="ring">7</div>
+            <div class="ft"><span>лет</span></div>
+          </div>
+          <div class="mb-gt t4">
+            Ближайшее<small>время</small>
+            <div class="orb"></div>
+            <div class="ticks"></div>
+            <div class="ft"><span>19:00</span></div>
+          </div>
+        </div>
+        <div class="ctrl"><i>✕</i><span>Фильтры</span><i class="w">✓</i></div>
+        <div class="pg"><i></i><i></i></div>
+      </div>
+
+      <div class="mb-cv-right">
+        <div class="mb-cv-pair">
+          <b>Роль</b><span class="mb-cv-m">Product Designer, единственный дизайнер в команде</span>
+        </div>
+        <b>iOS и Android<br />с нуля до сторов</b>
+        <div class="mb-mark" aria-hidden="true">
+          <i class="p1"></i><i class="c"></i><i class="c"></i><i class="p2"></i>
+        </div>
+        <div class="flex flex-col gap-1">
+          <span class="mb-cv-m whitespace-nowrap">{18% → 27%}</span>
+          <b>Конверсия в первую запись</b>
+        </div>
+        <div class="mb-cv-pair">
+          <b>Процесс</b><span class="mb-cv-m">Discovery, CJM, JTBD, UX/UI, дизайн-система, Design QA</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- О проекте (id не «about» — так называется раздел главной в шапке) -->
+    <section id="overview" class="mb-board violet mb-about">
+      <nav class="mb-navpills" aria-label="Разделы кейса">
+        <RouterLink v-for="(item, i) in nav" :key="item.id" :to="{ hash: '#' + item.id }" :class="{ on: i === 0 }">
+          {{ item.label }}
+        </RouterLink>
+      </nav>
+      <div class="mb-ab-l">
+        <p class="mb-ab-lead">
+          Mindset — приложение для онлайн-консультаций с психологами. Я спроектировала его с нуля и довела до
+          публикации в сторах
+        </p>
+        <p>
+          После первого релиза стало видно: люди теряются среди специалистов и откладывают запись. Я перестроила
+          каталог, карточку, профиль и запись так, чтобы решение принималось в одном месте
+        </p>
+        <div class="mb-ab-meta">
+          <div><span>Роль</span>Product Designer, единственный дизайнер</div>
+          <div><span>Команда</span>Product Manager и разработчики</div>
+          <div><span>Что делала</span>Discovery · CJM · JTBD · UX/UI · дизайн-система · Design QA</div>
+        </div>
+      </div>
+      <div class="mb-fan">
+        <MindsetPhone screen="filters" class="f1" />
+        <MindsetPhone screen="profile" class="f2" />
+        <MindsetPhone screen="done" class="f3" />
+      </div>
+    </section>
+
+    <!-- 01 Discovery -->
+    <section id="discovery" class="mb-board">
+      <div class="mb-bh">
+        <div class="mb-bl"><span class="mb-bno">{01}</span><span class="mb-bey">Discovery</span></div>
+        <h2>Почему люди откладывают <span>запись к психологу</span></h2>
+        <p>
+          Аудитория — молодые специалисты, которым нужна психологическая поддержка онлайн. Ключевой сценарий: от
+          регистрации до первой консультации
+        </p>
+      </div>
+      <div class="mb-g2">
+        <div class="mb-tile">
+          <span class="mb-kick">Конкурентный анализ</span>
+          <b class="mb-tt">«Ясно», «Грань», Zigmund.Online</b>
+          <ul class="mb-dots">
+            <li>Как подбирают специалиста под запрос</li>
+            <li>Что видно в каталоге, а что — только в профиле</li>
+            <li>Когда показывают цену и свободные слоты</li>
+            <li>Сколько действий до записи</li>
+          </ul>
+        </div>
+        <div class="mb-tile">
+          <span class="mb-kick">Глубинные интервью</span>
+          <b class="mb-tt"><mark class="mb-fill">[N]</mark> пользователей сервисов онлайн-психотерапии</b>
+          <ul class="mb-dots">
+            <li>Прошлый опыт и частота встреч</li>
+            <li>По каким критериям выбирают специалиста</li>
+            <li>Отношение к стоимости и квалификации</li>
+            <li>Что заставляет отложить запись</li>
+          </ul>
+          <p class="mb-small">Кто они: <mark class="mb-fill">[возраст, опыт терапии]</mark></p>
+        </div>
+      </div>
+      <div class="mb-g3 mb-mt">
+        <div v-for="name in competitors" :key="name" class="mb-tile mb-todo">
+          <span class="mb-kick">{{ name }}</span>
+          <p><b>Сильная сторона:</b> <mark class="mb-fill">[что работает]</mark></p>
+          <p><b>Мешает записаться:</b> <mark class="mb-fill">[слабое место]</mark></p>
+        </div>
+      </div>
+
+      <h3 class="mb-sub">Ключевые инсайты</h3>
+      <div class="mb-g3">
+        <div v-for="(item, i) in insights" :key="item.title" class="mb-ins">
+          <span class="n mb-num">{{ i + 1 }}</span>
+          <b>{{ item.title }}</b>
+          <p>{{ item.text }}</p>
+          <div class="to">→ {{ item.to }}</div>
+        </div>
+      </div>
+
+      <h3 class="mb-sub">Три вопроса, на которые должен ответить интерфейс</h3>
+      <div class="mb-g3">
+        <div v-for="item in questions" :key="item.q" class="mb-q">
+          <i class="mb-num">?</i>
+          <b>{{ item.q }}</b>
+          <span>{{ item.where }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 Продуктовая проблема -->
+    <section id="problem" class="mb-board sky">
+      <div class="mb-bh">
+        <div class="mb-bl"><span class="mb-bno">{02}</span><span class="mb-bey">Продуктовая проблема</span></div>
+        <h2>Сложно не найти психолога, <span>а решиться на запись</span></h2>
+      </div>
+      <div class="mb-pb">
+        <div class="mb-quote">
+          <span class="mb-kick">Проблема пользователя</span>
+          «Я хочу обратиться за помощью, но не понимаю, какой специалист мне подходит, чем психологи отличаются и
+          кому можно доверять»
+        </div>
+        <div class="mb-biz">
+          <span class="mb-kick">Проблема бизнеса</span>
+          <b class="mb-huge mb-num">18%</b>
+          <p>
+            зарегистрировавшихся доходили до первой записи — главного целевого действия. Сложный выбор терял людей
+            ещё до консультации
+          </p>
+        </div>
+      </div>
+      <div class="mb-hyp">
+        <span class="mb-kick">Гипотеза</span>
+        <p>
+          <em>Если</em> помочь быстрее находить подходящих психологов, показывать ключевые критерии раньше и
+          упростить запись, <em>то</em> больше людей дойдут до первой консультации, <em>потому что</em> решение
+          будет приниматься в одном месте
+        </p>
+      </div>
+      <div class="mb-task">
+        <span class="mb-kick">Дизайн-задача</span>
+        <p>
+          Сквозной сценарий: найти, сравнить, оценить квалификацию и условия, выбрать время, оплатить и
+          подключиться. Баланс — между полнотой информации и простотой
+        </p>
+      </div>
+    </section>
+
+    <!-- 03 JTBD -->
+    <section id="jtbd" class="mb-board">
+      <div class="mb-bh">
+        <div class="mb-bl"><span class="mb-bno">{03}</span><span class="mb-bey">JTBD</span></div>
+        <h2>Какую задачу <span>решает пользователь</span></h2>
+      </div>
+      <p class="mb-jmain mb-ind">
+        Когда я решаю обратиться за помощью, я хочу <span class="hl">быстро найти</span> специалиста, которому
+        смогу доверять, чтобы получить поддержку без долгого поиска
       </p>
-      <div class="mt-8 flex flex-wrap gap-0.5">
-        <span
-          v-for="chip in ['Product Designer — единственный дизайнер', 'Discovery · CJM · JTBD · UI · дизайн-система · Design QA', 'Команда: PM и разработчики']"
-          :key="chip"
-          class="rounded-full bg-white/15 px-4 py-2.5 text-[13px] font-medium sm:text-sm"
-        >
-          {{ chip }}
-        </span>
-      </div>
-    </div>
-  </section>
-
-  <!--
-    Экраны записи и ключевые цифры. Этот и следующие блоки шире колонки текста
-    (до 1040px, как экраны концептов), чтобы телефоны не были мелкими
-  -->
-  <section
-    class="mx-auto flex w-full max-w-[1040px] flex-col gap-8 rounded-[32px] bg-white p-5 text-ink sm:gap-10 sm:p-6"
-    aria-label="Экраны и результаты"
-  >
-    <!-- На узком экране телефоны листаются вбок -->
-    <div class="-mx-5 overflow-x-auto px-5 pb-2 sm:-mx-6 sm:px-6">
-      <div class="grid grid-cols-[repeat(4,minmax(210px,1fr))] gap-4">
-        <MindsetPhone v-for="screen in heroScreens" :key="screen" :screen="screen" />
-      </div>
-    </div>
-
-    <dl class="grid grid-cols-2 gap-x-3 border-t border-ink/10 md:grid-cols-4">
-      <div v-for="kpi in kpis" :key="kpi.value" class="flex flex-col gap-1 pt-4 pr-3">
-        <dt class="order-2 text-[13px] leading-snug text-ink/60">{{ kpi.text }}</dt>
-        <dd class="order-1 text-[22px] font-bold tracking-[-0.02em] text-brand tabular-nums sm:text-[28px]">
-          {{ kpi.value }}
-        </dd>
-      </div>
-    </dl>
-  </section>
-
-  <nav class="mx-auto flex w-full max-w-[1040px] flex-wrap gap-1 rounded-[32px] bg-white p-3 sm:p-4" aria-label="Разделы кейса">
-    <RouterLink
-      v-for="item in toc"
-      :key="item.id"
-      :to="{ hash: `#${item.id}` }"
-      class="rounded-full bg-surface px-4 py-2.5 text-[13px] font-medium transition hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:text-sm"
-    >
-      {{ item.label }}
-    </RouterLink>
-  </nav>
-
-  <CaseSection id="discovery" num="01" kicker="Discovery" title="Как люди выбирают психолога">
-    <p :class="muted" class="max-w-[68ch] sm:text-base">
-      Продукт для молодых специалистов, которым нужна психологическая поддержка онлайн. Ключевой сценарий —
-      от регистрации до первой консультации: выбрать психолога, оценить квалификацию, найти время, оплатить
-      и подключиться к видеосессии
-    </p>
-
-    <div class="grid gap-2 sm:grid-cols-2">
-      <div v-for="item in research" :key="item.kicker" :class="tile">
-        <span :class="kick" class="text-ink/50">{{ item.kicker }}</span>
-        <p class="text-base font-semibold">{{ item.title }}</p>
-        <ul :class="list" class="text-ink/70">
-          <li v-for="point in item.points" :key="point">{{ point }}</li>
-        </ul>
-      </div>
-    </div>
-
-    <h3 class="text-xl font-semibold">Ключевые инсайты</h3>
-    <ol class="flex flex-col gap-2">
-      <li
-        v-for="(item, i) in insights"
-        :key="item.title"
-        class="grid grid-cols-[32px_1fr] gap-x-4 gap-y-3 rounded-[20px] bg-surface p-5 md:grid-cols-[40px_1fr_220px] md:gap-5"
-      >
-        <span class="text-[28px] leading-none font-bold text-brand">{{ i + 1 }}</span>
-        <div class="flex min-w-0 flex-col gap-2">
-          <h4 class="text-lg leading-snug font-semibold">{{ item.title }}</h4>
-          <p :class="muted">{{ item.text }}</p>
+      <div class="mb-g3 mt-10">
+        <div v-for="job in jobs" :key="job.kicker" class="mb-tile">
+          <span class="mb-kick">{{ job.kicker }}</span>
+          <p class="mb-lg">{{ job.text }}</p>
         </div>
-        <div class="col-start-2 flex flex-col gap-1.5 rounded-2xl bg-white p-4 md:col-start-3">
-          <span :class="kick" class="text-brand">→ Решение</span>
-          <p class="text-[15px] font-semibold">{{ item.solution }}</p>
+      </div>
+      <div class="mb-crit">
+        <b>Критерий успеха</b>
+        Дойти от регистрации до первой записи без посторонней помощи и возвратов между экранами
+      </div>
+    </section>
+
+    <!-- 04 Стратегия -->
+    <section id="strategy" class="mb-board dark">
+      <div class="mb-bh">
+        <div class="mb-bl"><span class="mb-bno">{04}</span><span class="mb-bey">Стратегия</span></div>
+        <h2>Упростить выбор, <span>а не усложнить подбор</span></h2>
+        <p>Для MVP сравнили два подхода: что закрывает найденные проблемы в сроки и объём первой версии</p>
+      </div>
+      <div class="mb-g2">
+        <div v-for="opt in options" :key="opt.title" class="mb-opt" :class="{ pick: opt.pick }">
+          <span class="st">{{ opt.status }}</span>
+          <b>{{ opt.title }}</b>
+          <ul>
+            <li v-for="item in opt.plus" :key="item" class="p">{{ item }}</li>
+            <li v-for="item in opt.minus" :key="item" class="m">{{ item }}</li>
+          </ul>
+          <span class="why">{{ opt.why }}</span>
         </div>
-      </li>
-    </ol>
+      </div>
+      <div class="mb-g3 mb-lines">
+        <div v-for="(item, i) in principles" :key="item.title">
+          <i>0{{ i + 1 }}</i>
+          <b>{{ item.title }}</b>
+          <p>{{ item.text }}</p>
+        </div>
+      </div>
+    </section>
 
-    <h3 class="text-xl font-semibold">Три вопроса, на которые должен ответить интерфейс</h3>
-    <div class="grid gap-2 sm:grid-cols-3">
-      <div v-for="item in questions" :key="item.title" :class="tile">
-        <span class="grid size-8 place-items-center rounded-full bg-accent font-bold" aria-hidden="true">?</span>
-        <b class="text-lg leading-snug font-semibold">{{ item.title }}</b>
-        <span class="text-[13px] text-ink/60">{{ item.where }}</span>
+    <!-- 05 Сценарии -->
+    <section id="flow" class="mb-board">
+      <div class="mb-bh">
+        <div class="mb-bl"><span class="mb-bno">{05}</span><span class="mb-bey">Проектирование сценариев</span></div>
+        <h2>От потребности <span>до консультации</span></h2>
       </div>
-    </div>
-  </CaseSection>
-
-  <CaseSection id="problem" num="02" kicker="Продуктовая проблема" title="Сложно не найти психолога, а принять решение">
-    <figure class="flex flex-col gap-2.5 rounded-[20px] border-2 border-brand p-5 sm:px-7 sm:py-6">
-      <figcaption :class="kick" class="text-brand">Проблема пользователя</figcaption>
-      <blockquote class="text-lg leading-snug font-medium sm:text-[22px]">
-        «Я хочу обратиться за помощью, но не понимаю, какой специалист мне подходит, чем психологи отличаются
-        и кому можно доверять»
-      </blockquote>
-    </figure>
-    <div class="grid gap-2 md:grid-cols-3">
-      <div v-for="item in problemTiles" :key="item.kicker" :class="tile">
-        <span :class="kick" class="text-ink/50">{{ item.kicker }}</span>
-        <p class="text-[15px] leading-normal">{{ item.text }}</p>
-      </div>
-    </div>
-  </CaseSection>
-
-  <CaseSection id="jtbd" num="03" kicker="JTBD" title="Какую задачу решает пользователь">
-    <div class="grid gap-2 md:grid-cols-2">
-      <div class="flex flex-col gap-2.5 rounded-[20px] bg-brand p-5 text-white sm:p-6">
-        <span :class="kick" class="text-white/70">Основной JTBD</span>
-        <p class="text-base leading-snug font-medium sm:text-lg">
-          Когда я сталкиваюсь с психологическими трудностями и решаю обратиться за помощью, я хочу быстро
-          найти специалиста, которому смогу доверять, чтобы получить поддержку без долгого и сложного поиска
-        </p>
-      </div>
-      <div class="flex flex-col gap-2.5 rounded-[20px] bg-surface p-5 sm:p-6">
-        <span :class="kick" class="text-ink/50">Вторичный JTBD</span>
-        <p class="text-base leading-snug font-medium sm:text-lg">
-          Когда я выбрала психолога, я хочу видеть время, стоимость и понятные шаги записи, чтобы
-          забронировать консультацию самой и быть уверенной, что всё оформлено правильно
-        </p>
-      </div>
-    </div>
-    <div class="grid gap-2 sm:grid-cols-2">
-      <div :class="tile">
-        <span :class="kick" class="text-ink/50">Функциональная задача</span>
-        <p class="text-[15px] leading-normal">
-          Найти психолога с подходящей специализацией, квалификацией, стоимостью и временем
-        </p>
-      </div>
-      <div :class="tile">
-        <span :class="kick" class="text-ink/50">Эмоциональная задача</span>
-        <p class="text-[15px] leading-normal">
-          Почувствовать уверенность в выборе и снизить тревогу перед первой консультацией
-        </p>
-      </div>
-    </div>
-    <p class="text-[13px] text-ink/60">
-      UX-критерий успеха: дойти от регистрации до первой записи без посторонней помощи и возвратов между экранами
-    </p>
-  </CaseSection>
-
-  <CaseSection id="strategy" num="04" kicker="Стратегия" title="Сократить сложность выбора, а не усложнить подбор">
-    <h3 class="text-xl font-semibold">Выбор подхода для MVP</h3>
-    <div class="grid gap-2 sm:grid-cols-2">
-      <div :class="tile">
-        <span :class="kick" class="text-ink/50">Рассматривали</span>
-        <b class="text-lg font-semibold">Персональный подбор через анкету</b>
-        <ul :class="list">
-          <li>Помогает тем, кто не знает, кого выбрать</li>
-          <li>Нужна логика подбора и рекомендаций</li>
-          <li>Больше объём разработки, не укладывается в сроки</li>
-        </ul>
-      </div>
-      <div :class="tile" class="bg-brand! text-white">
-        <span :class="kick" class="text-white/70">Выбрали</span>
-        <b class="text-lg font-semibold">Каталог с фильтрами и информативными профилями</b>
-        <ul :class="list">
-          <li>Решает найденные проблемы</li>
-          <li>Пользователь сам управляет выбором</li>
-          <li>Укладывается в MVP, подбор остаётся на будущее</li>
-        </ul>
-      </div>
-    </div>
-
-    <h3 class="text-xl font-semibold">Три принципа</h3>
-    <div class="grid gap-2 md:grid-cols-3">
-      <div v-for="(item, i) in principles" :key="item.title" :class="tile">
-        <span class="text-[30px] leading-none font-bold text-brand">{{ i + 1 }}</span>
-        <b class="text-base font-semibold">{{ item.title }}</b>
-        <span class="text-sm leading-normal text-ink/60">{{ item.text }}</span>
-      </div>
-    </div>
-  </CaseSection>
-
-  <CaseSection id="flow" num="05" kicker="Проектирование сценариев" title="От потребности до консультации">
-    <div class="-mx-5 overflow-x-auto px-5 pb-4 sm:-mx-6 sm:px-6">
-      <ol class="flex min-w-max items-center gap-1.5">
-        <template v-for="(step, i) in flow" :key="step">
-          <li class="rounded-xl bg-surface px-3 py-2 text-[13px]">{{ step }}</li>
-          <li v-if="i < flow.length - 1" class="text-ink/40" aria-hidden="true">→</li>
+      <div class="mb-flow mb-ind">
+        <template v-for="(item, i) in flow" :key="item.step">
+          <span :class="{ k: item.key }">{{ item.step }}</span>
+          <i v-if="i < flow.length - 1" aria-hidden="true">→</i>
         </template>
-      </ol>
-    </div>
-    <div class="grid grid-cols-2 gap-2 md:grid-cols-4">
-      <div v-for="tab in navTabs" :key="tab.title" class="flex flex-col gap-1 rounded-2xl bg-surface p-4">
-        <b class="text-[15px]">{{ tab.title }}</b>
-        <span class="text-[13px] leading-snug text-ink/60">{{ tab.text }}</span>
       </div>
-    </div>
-    <div class="grid gap-2 sm:grid-cols-2">
-      <div :class="tile">
-        <strong class="text-[44px] leading-none font-bold tracking-[-0.02em]">~80</strong>
-        <p class="text-[15px] leading-normal">
-          экранов и состояний в Figma: регистрация и анкета, поиск, запись, оплата, чат, видеосессия, оценка
-        </p>
+      <div class="mb-g4 mb-mt mb-ind">
+        <div v-for="tab in navTabs" :key="tab.title" class="mb-tile sm">
+          <b>{{ tab.title }}</b>
+          <p>{{ tab.text }}</p>
+        </div>
       </div>
-      <div :class="tile">
-        <span :class="kick" class="text-ink/50">UX-тестирование прототипа</span>
-        <p class="text-[15px] leading-normal">
-          Задача: пройти сценарий от выбора психолога до записи. Две главные сложности:
-        </p>
-        <ul :class="list">
-          <li>Терялись среди большого количества специалистов</li>
-          <li>Не понимали, чем психологи отличаются друг от друга</li>
-        </ul>
-        <p class="text-[15px] leading-normal font-semibold">
-          Вывод: нужно не больше информации, а понятный способ находить, сравнивать и использовать её
-        </p>
+      <div class="mb-eighty mb-ind">
+        <b class="mb-num">~80</b>
+        <span>экранов и состояний в Figma: регистрация и анкета, поиск, запись, оплата, чат, видеосессия, оценка</span>
       </div>
-    </div>
-  </CaseSection>
 
-  <CaseSection id="solution" num="06" kicker="UX/UI-решения" title="Четыре изменения ключевого сценария">
-    <div class="flex flex-col gap-10 sm:gap-12">
-      <div
-        v-for="(item, i) in solutions"
-        :key="item.screen"
-        class="grid items-center gap-6 md:gap-12"
-        :class="i % 2 ? 'md:grid-cols-[1fr_240px]' : 'md:grid-cols-[240px_1fr]'"
-      >
-        <MindsetPhone :screen="item.screen" class="w-full max-w-[240px] justify-self-center" :class="{ 'md:order-2': i % 2 }" />
-        <div class="flex min-w-0 flex-col gap-4">
-          <span :class="kick" class="text-brand">{{ item.kicker }}</span>
-          <h3 class="text-[22px] leading-tight font-semibold tracking-[-0.01em] sm:text-[26px]">{{ item.title }}</h3>
-          <ul class="flex flex-col gap-3.5">
-            <li
-              v-for="point in item.points"
-              :key="point.title"
-              class="border-l-2 border-brand/30 pl-4 text-[15px] leading-normal text-ink/60"
-            >
-              <b class="mb-0.5 block font-semibold text-ink">{{ point.title }}</b>
-              {{ point.text }}
+      <h3 class="mb-sub">UX-тестирование прототипа</h3>
+      <p class="mb-intro mb-ind">
+        <mark class="mb-fill">[N участников]</mark>, <mark class="mb-fill">[модерируемый / немодерируемый]</mark>
+        тест прототипа. Задача: пройти путь от выбора психолога до записи.
+        <mark class="mb-fill">[X из N]</mark> не справились без подсказки
+      </p>
+      <div class="mb-g2">
+        <div class="mb-tile">
+          <b class="mb-tt">Терялись среди специалистов</b>
+          <p class="mb-was">В прототипе: <mark class="mb-fill">[проверь: много параметров в фильтрах]</mark></p>
+          <p class="mb-now">Стало: три фильтра из интервью и частые запросы чипсами</p>
+        </div>
+        <div class="mb-tile">
+          <b class="mb-tt">Не понимали, чем психологи отличаются</b>
+          <p class="mb-was">В прототипе: <mark class="mb-fill">[проверь: различия видны только в профилях]</mark></p>
+          <p class="mb-now">Стало: подход, опыт и специализации прямо в карточке</p>
+        </div>
+      </div>
+      <div class="mb-outc">Нужно не больше информации, а понятный способ находить, сравнивать и использовать её</div>
+    </section>
+
+    <!-- 06 Решения -->
+    <section id="solution" class="mb-board sky">
+      <div class="mb-bh">
+        <div class="mb-bl"><span class="mb-bno">{06}</span><span class="mb-bey">UX/UI-решения</span></div>
+        <h2>Четыре изменения <span>ключевого сценария</span></h2>
+      </div>
+      <div class="mb-sols">
+        <div v-for="sol in solutions" :key="sol.screen" class="mb-sol">
+          <MindsetPhone :screen="sol.screen" />
+          <span class="mb-sn">{{ sol.label }}</span>
+          <h4>{{ sol.title }}</h4>
+          <ul>
+            <li v-for="point in sol.points" :key="point.b">
+              <b>{{ point.b }}</b>{{ point.t ? ' ' + point.t : '' }}
             </li>
           </ul>
         </div>
       </div>
-    </div>
-  </CaseSection>
-
-  <CaseSection id="ds" num="07" kicker="Дизайн-система" title="Спокойный визуальный язык и библиотека компонентов">
-    <p :class="muted" class="max-w-[68ch] sm:text-base">
-      Приложение делалось с нуля, поэтому сначала — единые правила. Спокойная палитра, понятная типографика
-      и выраженная иерархия помогают сосредоточиться на выборе, а акцентные CTA ведут к следующему шагу
-    </p>
-    <div class="mm grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
-      <div v-for="token in tokens" :key="token.name" class="flex flex-col gap-1 rounded-2xl bg-surface p-3">
-        <i class="mb-1 block h-10 rounded-lg ring-1 ring-ink/5 ring-inset" :style="{ background: token.color }"></i>
-        <b class="text-[12px] font-semibold">{{ token.name }}</b>
-        <span class="text-[12px] leading-snug text-ink/60">{{ token.text }}</span>
+      <div class="mb-finale">
+        <MindsetPhone screen="done" />
+        <div class="mb-fin-t">
+          <span class="mb-kick">Финал сценария</span>
+          <h3>«Вы записаны» — и сразу понятно, что дальше</h3>
+          <p>
+            Дата, психолог и три следующих шага: напоминание, ссылка на видео, правила переноса. Отсюда меньше
+            вопросов в поддержку
+          </p>
+        </div>
       </div>
-    </div>
-    <div class="mm grid gap-2 md:grid-cols-3">
-      <div :class="tile" class="text-[12.5px]">
-        <span :class="kick" class="text-ink/50">Карточка психолога</span>
-        <div class="mm-card">
-          <div class="mm-row">
-            <span class="mm-ava b"></span>
-            <div><b>Илья Соколов</b><span>Гештальт · 5 лет</span></div>
-            <span class="mm-rate">4,8</span>
+    </section>
+
+    <!-- 07 Дизайн-система -->
+    <section id="ds" class="mb-board">
+      <div class="mb-bh">
+        <div class="mb-bl"><span class="mb-bno">{07}</span><span class="mb-bey">Дизайн-система</span></div>
+        <h2>Спокойный визуальный язык <span>для тревожного момента</span></h2>
+        <p>
+          Приложение делалось с нуля, поэтому сначала — единые правила. Спокойная палитра и выраженная иерархия
+          помогают сосредоточиться на выборе
+        </p>
+      </div>
+      <div class="mb-pal mb-ind">
+        <div v-for="sw in palette" :key="sw.name">
+          <i :style="{ background: sw.color }"></i>
+          <b>{{ sw.name }}</b>
+          <span>{{ sw.text }}</span>
+        </div>
+      </div>
+
+      <h3 class="mb-sub">Компоненты</h3>
+      <div class="mb-g2">
+        <div class="mb-tile">
+          <span class="mb-kick">Карточка психолога</span>
+          <div class="mb-pc max-w-[340px]">
+            <div class="t">
+              <span class="mb-av"></span>
+              <div class="nm"><b>Илья Соколов</b><span>Гештальт · 5 лет</span></div>
+              <span class="r">★ 4,8</span>
+            </div>
+            <div class="bt"><span class="mb-slot">Завтра в 10:00</span><b>2 500 ₽</b></div>
           </div>
-          <div class="mm-foot"><span class="mm-slot">Завтра в 10:00</span><b>2 500 ₽</b></div>
+        </div>
+        <div class="mb-tile">
+          <span class="mb-kick">Слоты времени</span>
+          <div class="mb-sg big"><span>17:00</span><span class="on">19:00</span><span>21:00</span></div>
+          <span class="mb-kick mt-2">Кнопки</span>
+          <div class="mb-btns"><span class="b1">Записаться</span><span class="b2">Написать в чат</span></div>
         </div>
       </div>
-      <div :class="tile" class="text-[12.5px]">
-        <span :class="kick" class="text-ink/50">Слоты времени</span>
-        <div class="mm-slots"><span>17:00</span><span class="on">19:00</span><span class="off">21:00</span></div>
-        <span :class="kick" class="mt-1 text-ink/50">Кнопки</span>
-        <div class="mm-btn">Записаться</div>
-        <div class="mm-btn ghost">Написать в чат</div>
-      </div>
-      <div :class="tile">
-        <span :class="kick" class="text-ink/50">Состояния</span>
-        <div class="mm-states">
-          <span class="load">Загружаем расписание…</span>
-          <span class="err">Оплата не прошла. Деньги не списаны</span>
-          <span class="ok">Вы записаны на 22 октября, 19:00</span>
-        </div>
-      </div>
-    </div>
-    <p class="text-[13px] text-ink/60">
-      Состояния загрузки, ошибок и успеха особенно важны в записи и оплате: пользователь должен понимать,
-      завершилось ли действие и что будет дальше
-    </p>
-  </CaseSection>
 
-  <CaseSection id="team" num="08" kicker="Команда и запуск" title="От гипотез до 100% пользователей">
-    <div class="-mx-5 overflow-x-auto px-5 pb-4 sm:-mx-6 sm:px-6">
-      <ol class="flex min-w-max items-center gap-1.5">
-        <template v-for="(step, i) in process" :key="step.label">
-          <li
-            class="rounded-xl px-3 py-2 text-[13px]"
-            :class="step.mine ? 'bg-brand font-semibold text-white' : 'bg-surface'"
-          >
-            {{ step.label }}
-          </li>
-          <li v-if="i < process.length - 1" class="text-ink/40" aria-hidden="true">→</li>
+      <h3 class="mb-sub">Состояния записи и оплаты</h3>
+      <div class="mb-g3">
+        <div class="mb-stt ld"><i></i>Загружаем расписание…</div>
+        <div class="mb-stt er"><i>!</i>Оплата не прошла. Деньги не списаны</div>
+        <div class="mb-stt ok"><i>✓</i>Вы записаны на 22 октября, 19:00</div>
+      </div>
+
+      <h3 class="mb-sub">Тексты интерфейса</h3>
+      <div class="mb-g3 mb-voice">
+        <div v-for="item in voice" :key="item.was">
+          <s>{{ item.was }}</s><em>{{ item.now }}</em>
+        </div>
+      </div>
+
+      <h3 class="mb-sub">Приватность и безопасность</h3>
+      <div class="mb-g2">
+        <div class="mb-tile mb-todo">
+          <span class="mb-kick">✎ если делала</span>
+          <b class="mb-tt">Приватность</b>
+          <p>
+            <mark class="mb-fill">[можно ли не указывать имя, что видит психолог до сессии, где хранится переписка]</mark>
+          </p>
+        </div>
+        <div class="mb-tile mb-todo">
+          <span class="mb-kick">✎ если делала</span>
+          <b class="mb-tt">Кризисный сценарий</b>
+          <p>
+            <mark class="mb-fill">[кнопка экстренной помощи, горячие линии, что пишем, если ближайший слот через несколько дней]</mark>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 Команда -->
+    <section id="team" class="mb-board violet">
+      <div class="mb-bh">
+        <div class="mb-bl"><span class="mb-bno">{08}</span><span class="mb-bey">Команда и запуск</span></div>
+        <h2>От гипотез <span>до 100% пользователей</span></h2>
+      </div>
+      <div class="mb-pipe mb-ind">
+        <template v-for="(step, i) in pipeline" :key="step">
+          <span>{{ step }}</span>
+          <i v-if="i < pipeline.length - 1" aria-hidden="true">→</i>
         </template>
-      </ol>
-    </div>
-    <div class="grid gap-2 md:grid-cols-3">
-      <div v-for="item in teamTiles" :key="item.kicker" :class="tile">
-        <span :class="kick" class="text-ink/50">{{ item.kicker }}</span>
-        <p class="text-[15px] leading-normal">{{ item.text }}</p>
       </div>
-    </div>
-  </CaseSection>
+      <div class="mb-g3 mb-lines">
+        <div v-for="item in team" :key="item.title">
+          <b>{{ item.title }}</b>
+          <p>{{ item.text }}</p>
+        </div>
+      </div>
+    </section>
 
-  <CaseSection id="results" num="09" kicker="Результаты" title="Влияние на продукт">
-    <div class="grid gap-2 md:grid-cols-[1.3fr_1fr_1fr]">
-      <div class="flex flex-col justify-end gap-1.5 rounded-[20px] bg-brand p-5 text-white sm:p-6">
-        <span :class="kick" class="text-white/70">Ключевая метрика</span>
-        <b class="text-[15px] font-semibold">Конверсия в первую запись</b>
-        <strong class="text-[40px] leading-[1.1] font-bold tracking-[-0.02em] whitespace-nowrap text-accent tabular-nums sm:text-[44px]">
-          18% → 27%
-        </strong>
-        <span class="text-[13px] text-white/75">+9 п.п., или +50% к исходному значению</span>
+    <!-- 09 Результаты -->
+    <section id="results" class="mb-board dark">
+      <div class="mb-bh">
+        <div class="mb-bl"><span class="mb-bno">{09}</span><span class="mb-bey">Результаты</span></div>
+        <h2>Вдвое быстрее до записи <span>и в полтора раза больше первых записей</span></h2>
       </div>
-      <div v-for="item in metrics" :key="item.title" :class="tile" class="gap-1.5!">
-        <b class="text-[15px] font-semibold">{{ item.title }}</b>
-        <strong class="text-[34px] leading-[1.1] font-bold tracking-[-0.02em] tabular-nums">{{ item.value }}</strong>
-        <span class="text-[13px] text-ink/60">{{ item.text }}</span>
+      <div class="mb-nums">
+        <div v-for="m in metrics" :key="m.label" :class="{ key: m.key }">
+          <span>{{ m.label }}</span>
+          <b class="mb-num">{{ m.value }}</b>
+          <em>{{ m.note }}</em>
+        </div>
       </div>
-    </div>
-    <div class="grid gap-2 sm:grid-cols-2">
-      <div :class="tile">
-        <span :class="kick" class="text-ink/50">Для пользователей</span>
-        <ul :class="list">
-          <li>Быстрее находят релевантных психологов</li>
-          <li>Цена, время и квалификация — там, где принимается решение</li>
-          <li>Меньше действий до записи</li>
-        </ul>
+      <div class="mb-howm mb-todo">
+        <span class="mb-kick">✎ как измеряли</span>
+        Сравнивали <mark class="mb-fill">[период до]</mark> и <mark class="mb-fill">[период после]</mark>,
+        <mark class="mb-fill">[A/B или до/после релиза]</mark>. Выборка — <mark class="mb-fill">[N пользователей]</mark>,
+        данные из <mark class="mb-fill">[AppMetrica / Amplitude]</mark>
       </div>
-      <div :class="tile" class="bg-brand! text-white">
-        <span :class="kick" class="text-white/70">Для продукта</span>
-        <ul :class="list">
-          <li>Полный сценарий от регистрации до видеоконсультации</li>
-          <li>Рост конверсии и скорости записи</li>
-          <li>Меньше нагрузки на поддержку</li>
-        </ul>
+      <div class="mb-g3 mb-link">
+        <div v-for="item in links" :key="item.title">
+          <b>{{ item.title }}</b>{{ item.text }}
+        </div>
       </div>
-    </div>
-  </CaseSection>
+      <p class="mb-confirm"><mark class="mb-fill">✎ подтверди связку «решение → метрика»</mark></p>
+    </section>
 
-  <CaseSection id="next" num="10" kicker="Дальше и выводы" title="Следующий фокус — повторная запись">
-    <p :class="muted" class="max-w-[68ch] sm:text-base">
-      После первой консультации важно продолжение терапии: записаться к знакомому психологу на следующую
-      встречу, не проходя поиск заново
-    </p>
-    <div class="flex flex-col gap-2.5 rounded-[20px] bg-brand p-5 text-white sm:p-7">
-      <span :class="kick" class="text-white/70">Главный вывод</span>
-      <p class="max-w-[46ch] text-lg leading-snug font-medium sm:text-[24px]">
-        Эффективность сценария зависит не от количества информации, а от того, как она структурирована
-        и показана в момент принятия решения
-      </p>
-    </div>
-    <p class="flex flex-wrap justify-between gap-2 border-t border-ink/10 pt-4 text-[13px] text-ink/50">
-      <span>Product Designer · Mental HealthTech</span>
-      <span>Имена и данные специалистов на экранах вымышлены</span>
-    </p>
-  </CaseSection>
+    <!-- 10 Дальше и выводы -->
+    <section id="next" class="mb-board">
+      <div class="mb-bh">
+        <div class="mb-bl"><span class="mb-bno">{10}</span><span class="mb-bey">Дальше и выводы</span></div>
+        <h2>Следующий фокус — <span>повторная запись</span></h2>
+        <p>
+          После первой консультации важно продолжение терапии: записаться к знакомому психологу в один-два тапа,
+          не проходя поиск заново
+        </p>
+      </div>
+      <div class="mb-g3">
+        <div class="mb-tile">
+          <b class="mb-tt">Повторная запись</b>
+          <p>С главной и из чата, к своему психологу</p>
+        </div>
+        <div class="mb-tile">
+          <b class="mb-tt">Кризисный сценарий</b>
+          <p>Экстренная помощь и горячие линии</p>
+        </div>
+        <div class="mb-tile">
+          <b class="mb-tt">Приватность</b>
+          <p>Анонимный режим и понятные правила</p>
+        </div>
+      </div>
+      <div class="mb-bigout">
+        <span class="mb-kick">Главный вывод</span>
+        <p>
+          Эффективность сценария зависит не от количества информации, а от того, как она
+          <span class="hl">показана</span> в момент решения
+        </p>
+      </div>
+      <div class="mb-endmark" role="img" aria-label="mindset">m<i></i>ndset</div>
+      <div class="mb-foot2">
+        <span>Product Designer · Mental HealthTech</span>
+        <span>Имена и данные специалистов вымышлены</span>
+      </div>
+    </section>
+  </div>
 </template>

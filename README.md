@@ -30,8 +30,7 @@ src/
 │   ├── SectionTitle.vue  # заголовок секции
 │   ├── Pill.vue          # кнопка-«пилюля» (ghost / accent / light)
 │   └── cases/            # кейсы с собственной вёрсткой страницы
-│       ├── CaseSection.vue   # раздел кейса: номер, рубрика, заголовок
-│       └── mindset/          # кейс Mindset и макеты экранов приложения кодом
+│       └── mindset/          # кейс Mindset: доска из разделов (board.css) и экраны приложения кодом
 ├── composables/
 │   └── useActiveSection.ts  # подсветка активного пункта навигации
 ├── data/
