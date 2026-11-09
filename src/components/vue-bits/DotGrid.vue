@@ -9,7 +9,8 @@
   ringEdges — внешние радиусы колец (px) для scaleSteps, напр. [26, 40, 52, 64]; пусто — кольцо равно шагу сетки;
   follow — плавность следования зоны за курсором (1 — мгновенно, меньше — с отставанием);
   trailFade — след: там, где прошёл курсор, точки гаснут за столько мс (0 — без следа);
-  moveThrottle — частота обновления курсора (0 — без троттлинга).
+  moveThrottle — частота обновления курсора (0 — без троттлинга);
+  shape — форма точки: circle или cloud (облачко).
 -->
 <template>
   <section :class="`flex items-center justify-center h-full w-full relative ${className}`" :style="style">
@@ -67,6 +68,7 @@ export interface DotGridProps {
   ringEdges?: number[];
   follow?: number;
   trailFade?: number;
+  shape?: 'circle' | 'cloud';
   className?: string;
   style?: CSSProperties;
 }
@@ -92,6 +94,7 @@ const props = withDefaults(defineProps<DotGridProps>(), {
   ringEdges: () => [],
   follow: 1,
   trailFade: 0,
+  shape: 'circle',
   className: '',
   style: () => ({})
 });
@@ -129,7 +132,22 @@ const circlePath = computed(() => {
   if (typeof window === 'undefined' || !window.Path2D) return null;
 
   const p = new Path2D();
-  p.arc(0, 0, props.dotSize / 2, 0, Math.PI * 2);
+  if (props.shape === 'cloud') {
+    // Облачко шириной в два dotSize: три круга на плоском основании (размеры — в долях ширины).
+    // Шаг сетки и размеры у курсора остаются прежними. Все части обходятся в одну сторону,
+    // поэтому заливка объединяет их в один силуэт
+    const w = props.dotSize * 2;
+    const bump = (x: number, y: number, r: number) => {
+      p.moveTo((x + r) * w, y * w);
+      p.arc(x * w, y * w, r * w, 0, Math.PI * 2);
+    };
+    bump(-0.25, 0.11, 0.2);
+    bump(0.02, -0.03, 0.28);
+    bump(0.28, 0.13, 0.18);
+    p.rect(-0.25 * w, 0.11 * w, 0.53 * w, 0.2 * w);
+  } else {
+    p.arc(0, 0, props.dotSize / 2, 0, Math.PI * 2);
+  }
   return p;
 });
 
@@ -391,7 +409,7 @@ watch([() => props.dotSize, () => props.gap], () => {
   buildGrid();
 });
 
-watch([() => props.proximity, () => props.baseColor, activeRgb, baseRgb, circlePath], () => {
+watch([() => props.proximity, () => props.baseColor, () => props.shape, activeRgb, baseRgb, circlePath], () => {
   if (rafId) {
     cancelAnimationFrame(rafId);
   }

@@ -4,7 +4,7 @@ import gsap from 'gsap'
 import DotGrid from '@/components/vue-bits/DotGrid.vue'
 
 /**
- * Фон из серых точек 2px и курсор-круг: сплошная точка 16px, мгновенно следует за мышью,
+ * Фон из серых облачков и курсор-круг: сплошная точка 16px, мгновенно следует за мышью,
  * над ссылками и кнопками плавно растёт до 24px.
  * Точки вокруг курсора увеличиваются и становятся фиолетовыми ступенями по кольцам
  * (SCALE_STEPS): 3 → 1.5 → 1.2 → 1 от activeScale; под курсором точки перекрываются.
@@ -89,6 +89,7 @@ onBeforeUnmount(() => cleanup?.())
 <template>
   <div class="pointer-events-none fixed inset-0 -z-10" aria-hidden="true">
     <DotGrid
+      shape="cloud"
       :dot-size="2"
       :gap="GRID_STEP - 2"
       base-color="#dcd5f4"

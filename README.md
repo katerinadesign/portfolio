@@ -24,7 +24,7 @@ src/
 │   ├── ConceptCard.vue   # карточка концепта
 │   ├── ConceptStage.vue  # экраны на странице концепта: до 1040px, узкая рамка
 │   ├── ConceptCover.vue  # картинка с видео поверх экранов
-│   ├── DotsBackground.vue  # фон из точек + курсор-круг (GSAP)
+│   ├── DotsBackground.vue  # фон из облачков + курсор-круг (GSAP)
 │   ├── vue-bits/DotGrid.vue  # сетка точек из Vue Bits (vue-bits.dev), с увеличением у курсора
 │   ├── AboutSection.vue  # «Обо мне»: контакты и ключевые результаты
 │   ├── SectionTitle.vue  # заголовок секции
