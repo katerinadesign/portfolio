@@ -9,18 +9,103 @@
 
   --color-brand: #8b6ff0; /* основной фиолетовый — карточки и шапка */
   --color-accent: #f2ff94; /* лаймовый — только точечные акценты */
-  --color-surface: #f5f5f5; /* фон страницы */
-  --color-ink: #1f1d2b; /* тёмный текст, в т.ч. на лаймовом */
+  --color-surface: #1e1a33; /* фон страницы — тёмные «сумерки» */
+  --color-ink: #1f1d2b; /* тёмный текст на лаймовом и белом */
+  --color-fg: #ece9f8; /* основной светлый текст на тёмном фоне */
 
   --container-page: 900px; /* основная колонка контента: max-w-page */
 }
 
 @layer base {
   body {
-    @apply bg-surface font-sans text-ink antialiased;
+    @apply bg-surface font-sans text-fg antialiased;
   }
 
   ::selection {
     @apply bg-accent text-ink;
   }
+}
+
+/*
+ * Цвета стекла «Сумерки»: чуть светлее тёмного фона, тон в тон
+ * (заливка и четыре размытых пятна внутри)
+ */
+:root {
+  --glass-bg: rgb(76 60 150 / 0.72);
+  --glass-1: rgb(110 90 200 / 0.45);
+  --glass-2: rgb(170 90 180 / 0.22);
+  --glass-3: rgb(52 40 120 / 0.8);
+  --glass-4: rgb(90 72 180 / 0.45);
+}
+
+/*
+ * Мягкое свечение на фоне, чтобы тёмный фон не был плоским: сиренево-малиновое сверху,
+ * тёплое персиковое снизу справа и чуть-чуть лаймового слева — в тон акценту.
+ * Слой зафиксирован, чтобы не «ездил» при прокрутке
+ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(75vw 60vh at 20% -10%, rgb(170 80 200 / 0.24), transparent 70%),
+    radial-gradient(60vw 60vh at 100% 105%, rgb(240 130 100 / 0.16), transparent 70%),
+    radial-gradient(45vw 45vh at 80% 40%, rgb(130 90 240 / 0.14), transparent 70%),
+    radial-gradient(35vw 40vh at -5% 70%, rgb(210 240 120 / 0.06), transparent 70%);
+}
+
+/*
+ * Стеклянный фиолетовый: полупрозрачная заливка с размытием того, что позади,
+ * и размытые световые пятна внутри. Элементу нужен relative или sticky.
+ */
+@utility glass {
+  isolation: isolate;
+  overflow: hidden;
+  /* цвета — переменные --glass-* выше */
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(64px) saturate(180%);
+  -webkit-backdrop-filter: blur(64px) saturate(180%);
+
+  /* размытые пятна света внутри */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -25%;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 18% 22%, var(--glass-1), transparent 38%),
+      radial-gradient(circle at 85% 15%, var(--glass-2), transparent 34%),
+      radial-gradient(circle at 70% 85%, var(--glass-3), transparent 45%),
+      radial-gradient(circle at 25% 90%, var(--glass-4), transparent 40%);
+    filter: blur(72px);
+  }
+}
+
+/* Круглая стрелка «перейти» в карточках проектов: на наведении карточки — лаймовая и поворачивается */
+.proj-arrow {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  font-size: 18px;
+  transition:
+    background-color 0.25s,
+    color 0.25s,
+    rotate 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.group:hover .proj-arrow {
+  background: var(--color-accent);
+  color: var(--color-ink);
+  rotate: -45deg;
+}
+
+/* Заглушки обложек проектов приглушены под тёмный фон */
+.cover-placeholder {
+  filter: brightness(0.55) saturate(1.1);
 }

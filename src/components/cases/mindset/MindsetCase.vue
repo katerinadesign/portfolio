@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import Pill from '@/components/Pill.vue'
 import MindsetPhone, { type MindsetScreen } from '@/components/cases/mindset/MindsetPhone.vue'
@@ -6,8 +7,29 @@ import './board.css'
 
 /**
  * Кейс Mindset: от выбора психолога до первой консультации.
- * Длинная доска из разделов; заглушки [в скобках] нужно заменить реальными данными
+ * Длинная доска из разделов. Цифры — по резюме (обновлено 25.09.2026)
  */
+
+// ВРЕМЕННО: варианты вёрстки — доска, стекло или на фоне (стили — в конце board.css)
+type View = 'board' | 'glass' | 'open'
+const VIEWS: { id: View; label: string }[] = [
+  { id: 'board', label: 'Доска' },
+  { id: 'glass', label: 'Стекло' },
+  { id: 'open', label: 'На фоне' },
+]
+const readView = (): View => {
+  try {
+    const v = localStorage.getItem('mindset-view') as View | null
+    if (v && VIEWS.some((x) => x.id === v)) return v
+  } catch {}
+  return 'board'
+}
+const view = ref<View>(readView())
+watch(view, (v) => {
+  try {
+    localStorage.setItem('mindset-view', v)
+  } catch {}
+})
 
 const nav = [
   { id: 'overview', label: 'о проекте' },
@@ -16,10 +38,9 @@ const nav = [
   { id: 'strategy', label: 'стратегия' },
   { id: 'flow', label: 'сценарии' },
   { id: 'solution', label: 'решения' },
+  { id: 'ds', label: 'дизайн-система' },
   { id: 'results', label: 'результаты' },
 ]
-
-const competitors = ['«Ясно»', '«Грань»', 'Zigmund.Online']
 
 const insights = [
   {
@@ -147,6 +168,21 @@ const solutions: { screen: MindsetScreen; label: string; title: string; points: 
   },
 ]
 
+const palette = [
+  { color: 'var(--color-brand)', name: 'primary', text: 'кнопки и акценты' },
+  { color: 'var(--mb-soft)', name: 'surface/soft', text: 'чипсы, фон блоков' },
+  { color: 'var(--mb-g1)', name: 'gradient/trust', text: 'психолог, доверие' },
+  { color: 'var(--mb-g2)', name: 'gradient/choice', text: 'выбор и фильтры' },
+  { color: 'var(--mb-g5)', name: 'gradient/success', text: 'время и запись' },
+  { color: 'var(--mb-g4)', name: 'gradient/alert', text: 'ошибки и срочное' },
+]
+
+const voice = [
+  { was: 'Ошибка платежа', now: 'Оплата не прошла. Деньги не списаны' },
+  { was: 'Слотов нет', now: 'Ближайшее время — завтра в 10:00' },
+  { was: 'Бронирование подтверждено', now: 'Вы записаны. Ссылка придёт в чат' },
+]
+
 const pipeline = [
   'Гипотезы с PM',
   'Приоритеты MVP',
@@ -174,7 +210,7 @@ const team = [
 
 const metrics = [
   { label: 'Конверсия в первую запись', value: '18% → 27%', note: '+9 п.п., или +50%', key: true },
-  { label: 'Время до записи', value: '6 → 3 мин', note: 'вдвое быстрее' },
+  { label: 'Время до записи', value: '6 → 2,5 мин', note: 'в 2,4 раза быстрее' },
   { label: 'Обращения в поддержку', value: '−35%', note: 'по первой консультации' },
 ]
 
@@ -186,17 +222,31 @@ const links = [
 </script>
 
 <template>
-  <div class="mb">
+  <div class="mb" :data-view="view">
+    <!-- ВРЕМЕННО: переключатель вариантов вёрстки -->
+    <div class="mb-viewsw" role="group" aria-label="Вариант вёрстки (временно)">
+      <button
+        v-for="v in VIEWS"
+        :key="v.id"
+        type="button"
+        :class="{ on: view === v.id }"
+        :aria-pressed="view === v.id"
+        @click="view = v.id"
+      >
+        {{ v.label }}
+      </button>
+    </div>
+
     <!-- Обложка: заголовок, большой телефон с каталогом, ключевые факты -->
     <section class="mb-cover">
       <div class="mb-cv-left">
         <div class="flex flex-col items-start gap-5">
-          <Pill :to="{ name: 'home', hash: '#projects' }" variant="light" medium class="bg-surface!">
+          <Pill :to="{ name: 'home', hash: '#projects' }" variant="light" medium class="mb-back">
             ← Все проекты
           </Pill>
-          <div class="mb-cv-brand">Mindset Case Study</div>
+          <div class="mb-cv-brand">Mindset</div>
         </div>
-        <h1 class="mb-cv-h">От выбора психолога <span>до первой консультации за 3 минуты</span></h1>
+        <h1 class="mb-cv-h">От выбора психолога <span>до записи на консультацию за 2,5 минуты</span></h1>
         <div class="mb-cv-foot">Mental <b>HealthTech</b></div>
       </div>
 
@@ -302,21 +352,25 @@ const links = [
         </div>
         <div class="mb-tile">
           <span class="mb-kick">Глубинные интервью</span>
-          <b class="mb-tt"><mark class="mb-fill">[N]</mark> пользователей сервисов онлайн-психотерапии</b>
+          <b class="mb-tt">12 пользователей, которые зарегистрировались, но не записались</b>
           <ul class="mb-dots">
             <li>Прошлый опыт и частота встреч</li>
             <li>По каким критериям выбирают специалиста</li>
             <li>Отношение к стоимости и квалификации</li>
             <li>Что заставляет отложить запись</li>
           </ul>
-          <p class="mb-small">Кто они: <mark class="mb-fill">[возраст, опыт терапии]</mark></p>
         </div>
       </div>
-      <div class="mb-g3 mb-mt">
-        <div v-for="name in competitors" :key="name" class="mb-tile mb-todo">
-          <span class="mb-kick">{{ name }}</span>
-          <p><b>Сильная сторона:</b> <mark class="mb-fill">[что работает]</mark></p>
-          <p><b>Мешает записаться:</b> <mark class="mb-fill">[слабое место]</mark></p>
+      <div class="mb-g2 mb-mt">
+        <div class="mb-tile">
+          <span class="mb-kick">Аналитика воронки</span>
+          <b class="mb-tt">41% уходили с каталога специалистов</b>
+          <p>По данным Amplitude основной отток — на выборе психолога: в среднем 4 минуты на экране каталога без записи</p>
+        </div>
+        <div class="mb-tile">
+          <span class="mb-kick">CJM первой сессии</span>
+          <b class="mb-tt">Ещё два барьера — цена и время</b>
+          <p>Дополнительные точки оттока: непонятная стоимость и доступность ближайших слотов</p>
         </div>
       </div>
 
@@ -450,21 +504,14 @@ const links = [
         <span>экранов и состояний в Figma: регистрация и анкета, поиск, запись, оплата, чат, видеосессия, оценка</span>
       </div>
 
-      <h3 class="mb-sub">UX-тестирование прототипа</h3>
-      <p class="mb-intro mb-ind">
-        <mark class="mb-fill">[N участников]</mark>, <mark class="mb-fill">[модерируемый / немодерируемый]</mark>
-        тест прототипа. Задача: пройти путь от выбора психолога до записи.
-        <mark class="mb-fill">[X из N]</mark> не справились без подсказки
-      </p>
+      <h3 class="mb-sub">Что поменяли после проверки прототипа</h3>
       <div class="mb-g2">
         <div class="mb-tile">
           <b class="mb-tt">Терялись среди специалистов</b>
-          <p class="mb-was">В прототипе: <mark class="mb-fill">[проверь: много параметров в фильтрах]</mark></p>
           <p class="mb-now">Стало: три фильтра из интервью и частые запросы чипсами</p>
         </div>
         <div class="mb-tile">
           <b class="mb-tt">Не понимали, чем психологи отличаются</b>
-          <p class="mb-was">В прототипе: <mark class="mb-fill">[проверь: различия видны только в профилях]</mark></p>
           <p class="mb-now">Стало: подход, опыт и специализации прямо в карточке</p>
         </div>
       </div>
@@ -502,10 +549,64 @@ const links = [
       </div>
     </section>
 
-    <!-- 07 Команда -->
+    <!-- 07 Дизайн-система -->
+    <section id="ds" class="mb-board">
+      <div class="mb-bh">
+        <div class="mb-bl"><span class="mb-bno">{07}</span><span class="mb-bey">Дизайн-система</span></div>
+        <h2>Спокойный визуальный язык <span>для тревожного момента</span></h2>
+        <p>
+          Приложение делалось с нуля, поэтому сначала — единые правила. Спокойная палитра и выраженная иерархия
+          помогают сосредоточиться на выборе
+        </p>
+      </div>
+      <div class="mb-pal mb-ind">
+        <div v-for="sw in palette" :key="sw.name">
+          <i :style="{ background: sw.color }"></i>
+          <b>{{ sw.name }}</b>
+          <span>{{ sw.text }}</span>
+        </div>
+      </div>
+
+      <h3 class="mb-sub">Компоненты</h3>
+      <div class="mb-g2">
+        <div class="mb-tile">
+          <span class="mb-kick">Карточка психолога</span>
+          <div class="mb-pc max-w-[340px]">
+            <div class="t">
+              <span class="mb-av"></span>
+              <div class="nm"><b>Илья Соколов</b><span>Гештальт · 5 лет</span></div>
+              <span class="r">★ 4,8</span>
+            </div>
+            <div class="bt"><span class="mb-slot">Завтра в 10:00</span><b>2 500 ₽</b></div>
+          </div>
+        </div>
+        <div class="mb-tile">
+          <span class="mb-kick">Слоты времени</span>
+          <div class="mb-sg big"><span>17:00</span><span class="on">19:00</span><span>21:00</span></div>
+          <span class="mb-kick mt-2">Кнопки</span>
+          <div class="mb-btns"><span class="b1">Записаться</span><span class="b2">Написать в чат</span></div>
+        </div>
+      </div>
+
+      <h3 class="mb-sub">Состояния записи и оплаты</h3>
+      <div class="mb-g3">
+        <div class="mb-stt ld"><i></i>Загружаем расписание…</div>
+        <div class="mb-stt er"><i>!</i>Оплата не прошла. Деньги не списаны</div>
+        <div class="mb-stt ok"><i>✓</i>Вы записаны на 22 октября, 19:00</div>
+      </div>
+
+      <h3 class="mb-sub">Тексты интерфейса</h3>
+      <div class="mb-g3 mb-voice">
+        <div v-for="item in voice" :key="item.was">
+          <s>{{ item.was }}</s><em>{{ item.now }}</em>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 Команда -->
     <section id="team" class="mb-board violet">
       <div class="mb-bh">
-        <div class="mb-bl"><span class="mb-bno">{07}</span><span class="mb-bey">Команда и запуск</span></div>
+        <div class="mb-bl"><span class="mb-bno">{08}</span><span class="mb-bey">Команда и запуск</span></div>
         <h2>От гипотез <span>до 100% пользователей</span></h2>
       </div>
       <div class="mb-pipe mb-ind">
@@ -522,10 +623,10 @@ const links = [
       </div>
     </section>
 
-    <!-- 08 Результаты -->
+    <!-- 09 Результаты -->
     <section id="results" class="mb-board dark">
       <div class="mb-bh">
-        <div class="mb-bl"><span class="mb-bno">{08}</span><span class="mb-bey">Результаты</span></div>
+        <div class="mb-bl"><span class="mb-bno">{09}</span><span class="mb-bey">Результаты</span></div>
         <h2>Вдвое быстрее до записи <span>и в полтора раза больше первых записей</span></h2>
       </div>
       <div class="mb-nums">
@@ -535,24 +636,22 @@ const links = [
           <em>{{ m.note }}</em>
         </div>
       </div>
-      <div class="mb-howm mb-todo">
-        <span class="mb-kick">✎ как измеряли</span>
-        Сравнивали <mark class="mb-fill">[период до]</mark> и <mark class="mb-fill">[период после]</mark>,
-        <mark class="mb-fill">[A/B или до/после релиза]</mark>. Выборка — <mark class="mb-fill">[N пользователей]</mark>,
-        данные из <mark class="mb-fill">[AppMetrica / Amplitude]</mark>
+      <div class="mb-howm">
+        <span class="mb-kick">Как измеряли</span>
+        A/B-тест нового сценария на 20% новых пользователей в течение 4 недель, данные — из Amplitude.
+        После теста решение раскатили на 100% пользователей
       </div>
       <div class="mb-g3 mb-link">
         <div v-for="item in links" :key="item.title">
           <b>{{ item.title }}</b>{{ item.text }}
         </div>
       </div>
-      <p class="mb-confirm"><mark class="mb-fill">✎ подтверди связку «решение → метрика»</mark></p>
     </section>
 
-    <!-- 09 Дальше и выводы -->
+    <!-- 10 Дальше и выводы -->
     <section id="next" class="mb-board">
       <div class="mb-bh">
-        <div class="mb-bl"><span class="mb-bno">{09}</span><span class="mb-bey">Дальше и выводы</span></div>
+        <div class="mb-bl"><span class="mb-bno">{10}</span><span class="mb-bey">Дальше и выводы</span></div>
         <h2>Следующий фокус — <span>повторная запись</span></h2>
         <p>
           После первой консультации важно продолжение терапии: записаться к знакомому психологу в один-два тапа,

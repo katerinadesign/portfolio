@@ -17,43 +17,52 @@ npm run preview  # предпросмотр сборки
 ```
 src/
 ├── components/
-│   ├── Layout.vue        # колонка 900px: шапка + контент
-│   ├── SiteHeader.vue    # липкая шапка с навигацией по секциям
-│   ├── HeroSection.vue   # первый блок
-│   ├── ConceptsSection.vue  # блок «Проекты»: сетка на всю ширину (~1.6 : 1)
-│   ├── ConceptCard.vue   # карточка концепта
-│   ├── ConceptStage.vue  # экраны на странице концепта: до 1040px, узкая рамка
-│   ├── ConceptCover.vue  # картинка с видео поверх экранов
-│   ├── DotsBackground.vue  # фон из облачков + курсор-круг (GSAP)
-│   ├── vue-bits/DotGrid.vue  # сетка точек из Vue Bits (vue-bits.dev), с увеличением у курсора
-│   ├── AboutSection.vue  # «Обо мне»: контакты и ключевые результаты
-│   ├── SectionTitle.vue  # заголовок секции
-│   ├── Pill.vue          # кнопка-«пилюля» (ghost / accent / light)
-│   └── cases/            # кейсы с собственной вёрсткой страницы
-│       └── mindset/          # кейс Mindset: доска из разделов (board.css) и экраны приложения кодом
-├── composables/
-│   └── useActiveSection.ts  # подсветка активного пункта навигации
+│   ├── Layout.vue           # шапка + контент, фон, человечек у курсора
+│   ├── SiteHeader.vue       # липкая шапка: имя, навигация по центру, тогл человечка
+│   ├── RunnerToggle.vue     # тогл «с человечком / без»
+│   ├── CursorFx.vue         # человечек у курсора: бегает, меняет цвет, говорит фразы
+│   ├── Starfield.vue        # мерцающие звёздочки на фоне
+│   ├── Comets.vue           # кометы: разбиваются о блоки и о человечка
+│   ├── SpaceScene.vue       # космос в самом низу главной: планеты, динозавр, НЛО, ракета
+│   ├── HeroSection.vue      # первый блок, меняющееся слово в заголовке
+│   ├── ConceptsSection.vue  # блок проектов
+│   ├── projects/
+│   │   ├── ProjectsStack.vue  # проекты стопкой при прокрутке
+│   │   └── ProjectCover.vue   # обложка проекта в одинаковой рамке
+│   ├── ConceptStage.vue     # экраны на странице концепта
+│   ├── ConceptCover.vue     # картинка с видео поверх экранов
+│   ├── AboutSection.vue     # «Обо мне»: результаты, опыт, образование
+│   ├── ContactSection.vue   # финальный блок с кнопкой в Телеграм
+│   ├── SectionTitle.vue     # заголовок секции
+│   ├── Pill.vue             # кнопка-«пилюля»
+│   └── cases/mindset/       # страница Mindset: разделы (board.css) и экраны приложения кодом
+├── composables/             # активный пункт навигации, состояние человечка
 ├── data/
-│   ├── profile.ts        # имя, почта, ссылки, пункты навигации
-│   └── concepts.ts       # карточки проектов (обложка; route — отдельная страница кейса)
-├── views/                # HomeView, ConceptView (/concepts/:slug), MindsetView (/projects/mindset), NotFoundView
-└── styles/tailwind.css   # цвета и шрифт (@theme)
+│   ├── profile.ts           # имя, почта, ссылки, пункты навигации
+│   ├── concepts.ts          # проекты: обложки, описания, экраны
+│   └── experience.ts        # «Обо мне»: ключевые результаты, опыт, навыки, образование
+├── directives/typograph.ts  # неразрывные пробелы: предлоги, тире, числа
+├── views/                   # HomeView, ConceptView (/concepts/:slug), MindsetView (/projects/mindset)
+└── styles/tailwind.css      # цвета, стекло, шрифт
 ```
 
 ## Цвета
 
-Заданы в `src/styles/tailwind.css` и доступны как классы `bg-brand`, `text-ink` и т.д.:
+Заданы в `src/styles/tailwind.css`, тема — тёмные «Сумерки»:
 
 | Токен | Цвет | Где |
 |---|---|---|
-| `brand` | `#8B6FF0` | шапка, карточки |
-| `accent` | `#F2FF94` | главное действие, активный пункт |
-| `surface` | `#F5F5F5` | фон страницы |
-| `ink` | `#1F1D2B` | тёмный текст |
+| `surface` | `#1E1A33` | фон страницы |
+| `fg` | `#ECE9F8` | основной светлый текст |
+| `accent` | `#F2FF94` | лаймовый: кнопки, цифры, акценты |
+| `ink` | `#1F1D2B` | тёмный текст на лаймовом и белом |
+| `--glass-*` | фиолетовое стекло | шапка и все фиолетовые блоки |
 
 ## Наполнение
 
-- **Проекты и концепты** — `src/data/concepts.ts`. `image` — обложка карточки (файл в `public/images/concepts`). Проекты пока моки.
+- **Проекты** — `src/data/concepts.ts`. Картинки — в `public/images/concepts`, видео — в `public/videos`. У пяти проектов пока нет обложек (стоят заглушки).
+- **Опыт и результаты** — `src/data/experience.ts`.
 - **Ссылки и почта** — `src/data/profile.ts` (ссылка на hh пока заглушка).
-- **Новая секция** — добавьте компонент с `id` в `HomeView.vue` и пункт в `navSections`.
+- **Фразы человечка** — `src/components/CursorFx.vue`, список `PHRASES`.
 - **CV** — замените `public/cv.pdf`.
+- **Mindset** — на странице пока есть временный переключатель вариантов вёрстки (левый нижний угол).

@@ -4,16 +4,19 @@ import ConceptCover from '@/components/ConceptCover.vue'
 import type { ConceptImage } from '@/data/concepts'
 
 /**
- * Карточка с экранами концепта (шириной до 1040px). У всех карточек одна пропорция «сцены»,
+ * Карточка с экранами концепта на всю ширину страницы. У всех карточек одна пропорция «сцены»,
  * а картинка масштабируется так, чтобы область с экранами (image.content) вписалась
  * в сцену — белые поля самой картинки обрезаются, телефоны во всех карточках
- * одинаковой высоты. Вокруг сцены — узкая рамка (padding карточки).
+ * одинаковой высоты. Сама картинка занимает SCALE от сцены — вокруг экранов остаётся воздух,
+ * а размер карточки не меняется.
  */
 const props = defineProps<{ image: ConceptImage; lazy?: boolean }>()
 
 // Пропорция сцены — по самому широкому набору экранов (Beyond: 1837×1148 px картинки),
 // чтобы телефоны во всех карточках были одной высоты
 const STAGE_ASPECT = 1.6
+// Доля сцены, которую занимают экраны
+const SCALE = 0.78
 
 const box = computed(() => {
   const { width, height } = props.image
@@ -43,10 +46,12 @@ const box = computed(() => {
 </script>
 
 <template>
-  <div class="mx-auto w-full max-w-[1040px] overflow-hidden rounded-[32px] bg-white p-3 sm:p-5">
+  <div class="w-full overflow-hidden rounded-[32px] bg-white p-2 sm:p-3">
     <div class="relative" :style="{ aspectRatio: STAGE_ASPECT }">
-      <div class="absolute" :style="box">
-        <ConceptCover :image="image" :lazy="lazy" />
+      <div class="absolute inset-0 m-auto" :style="{ width: `${SCALE * 100}%`, height: `${SCALE * 100}%` }">
+        <div class="absolute" :style="box">
+          <ConceptCover :image="image" :lazy="lazy" />
+        </div>
       </div>
     </div>
   </div>

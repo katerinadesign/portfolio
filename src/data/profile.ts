@@ -1,7 +1,7 @@
 /** Контакты и ссылки, которые повторяются в шапке, первом блоке и «Обо мне». */
 export const profile = {
   name: 'Екатерина Кабалина',
-  email: 'botina_e@ibox.ru',
+  email: 'botina_e@inbox.ru',
   telegramUrl: 'https://t.me/katerinakabalina',
   // TODO: заменить на ссылку на резюме
   hhUrl: 'https://hh.ru/',

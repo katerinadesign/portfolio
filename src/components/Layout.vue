@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import SiteHeader from '@/components/SiteHeader.vue'
-import DotsBackground from '@/components/DotsBackground.vue'
+import CursorFx from '@/components/CursorFx.vue'
+import Starfield from '@/components/Starfield.vue'
+import Comets from '@/components/Comets.vue'
 import { vTypograph } from '@/directives/typograph'
 </script>
 
 <template>
-  <DotsBackground />
+  <Starfield />
+  <Comets />
+  <CursorFx />
 
   <!--
     Контейнер на всю ширину: шапка и большинство блоков — в колонке max-w-page,
