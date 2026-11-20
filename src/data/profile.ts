@@ -3,8 +3,7 @@ export const profile = {
   name: 'Екатерина Кабалина',
   email: 'botina_e@inbox.ru',
   telegramUrl: 'https://t.me/katerinakabalina',
-  // TODO: заменить на ссылку на резюме
-  hhUrl: 'https://hh.ru/',
+  hhUrl: 'https://hh.ru/resume/d929d210ff11285c8f0039ed1f534952504164',
 }
 
 /** Секции главной, на которые ведёт навигация в шапке. Новые блоки добавлять сюда же. */
