@@ -70,6 +70,11 @@ onBeforeUnmount(() => {
 }
 /* --p: насколько карточку накрыла следующая (0…1) */
 .ps-inner {
+  /* Без прозрачности и размытия: стекло, наложенное на стекло, при прокрутке просвечивает.
+     Цвет — заливка стекла поверх фона страницы, световые пятна внутри остаются */
+  background-color: #3f327a;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   transform-origin: 50% 0;
   scale: calc(1 - var(--p, 0) * 0.08);
   filter: brightness(calc(1 - var(--p, 0) * 0.25));
