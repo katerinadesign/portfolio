@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import Pill from '@/components/Pill.vue'
+import PixelWord from '@/components/cases/mindset/PixelWord.vue'
 import MindsetPhone, { type MindsetScreen } from '@/components/cases/mindset/MindsetPhone.vue'
 import './board.css'
 
@@ -38,7 +39,6 @@ const nav = [
   { id: 'strategy', label: 'стратегия' },
   { id: 'flow', label: 'сценарии' },
   { id: 'solution', label: 'решения' },
-  { id: 'ds', label: 'дизайн-система' },
   { id: 'results', label: 'результаты' },
 ]
 
@@ -168,21 +168,6 @@ const solutions: { screen: MindsetScreen; label: string; title: string; points: 
   },
 ]
 
-const palette = [
-  { color: 'var(--color-brand)', name: 'primary', text: 'кнопки и акценты' },
-  { color: 'var(--mb-soft)', name: 'surface/soft', text: 'чипсы, фон блоков' },
-  { color: 'var(--mb-g1)', name: 'gradient/trust', text: 'психолог, доверие' },
-  { color: 'var(--mb-g2)', name: 'gradient/choice', text: 'выбор и фильтры' },
-  { color: 'var(--mb-g5)', name: 'gradient/success', text: 'время и запись' },
-  { color: 'var(--mb-g4)', name: 'gradient/alert', text: 'ошибки и срочное' },
-]
-
-const voice = [
-  { was: 'Ошибка платежа', now: 'Оплата не прошла. Деньги не списаны' },
-  { was: 'Слотов нет', now: 'Ближайшее время — завтра в 10:00' },
-  { was: 'Бронирование подтверждено', now: 'Вы записаны. Ссылка придёт в чат' },
-]
-
 const pipeline = [
   'Гипотезы с PM',
   'Приоритеты MVP',
@@ -210,7 +195,8 @@ const team = [
 
 const metrics = [
   { label: 'Конверсия в первую запись', value: '18% → 27%', note: '+9 п.п., или +50%', key: true },
-  { label: 'Время до записи', value: '6 → 2,5 мин', note: 'в 2,4 раза быстрее' },
+  // unit — кириллица точками (PixelWord): в шрифте цифр её нет
+  { label: 'Время до записи', value: '6 → 2,5', unit: 'мин', note: 'в 2,4 раза быстрее' },
   { label: 'Обращения в поддержку', value: '−35%', note: 'по первой консультации' },
 ]
 
@@ -549,64 +535,10 @@ const links = [
       </div>
     </section>
 
-    <!-- 07 Дизайн-система -->
-    <section id="ds" class="mb-board">
-      <div class="mb-bh">
-        <div class="mb-bl"><span class="mb-bno">{07}</span><span class="mb-bey">Дизайн-система</span></div>
-        <h2>Спокойный визуальный язык <span>для тревожного момента</span></h2>
-        <p>
-          Приложение делалось с нуля, поэтому сначала — единые правила. Спокойная палитра и выраженная иерархия
-          помогают сосредоточиться на выборе
-        </p>
-      </div>
-      <div class="mb-pal mb-ind">
-        <div v-for="sw in palette" :key="sw.name">
-          <i :style="{ background: sw.color }"></i>
-          <b>{{ sw.name }}</b>
-          <span>{{ sw.text }}</span>
-        </div>
-      </div>
-
-      <h3 class="mb-sub">Компоненты</h3>
-      <div class="mb-g2">
-        <div class="mb-tile">
-          <span class="mb-kick">Карточка психолога</span>
-          <div class="mb-pc max-w-[340px]">
-            <div class="t">
-              <span class="mb-av"></span>
-              <div class="nm"><b>Илья Соколов</b><span>Гештальт · 5 лет</span></div>
-              <span class="r">★ 4,8</span>
-            </div>
-            <div class="bt"><span class="mb-slot">Завтра в 10:00</span><b>2 500 ₽</b></div>
-          </div>
-        </div>
-        <div class="mb-tile">
-          <span class="mb-kick">Слоты времени</span>
-          <div class="mb-sg big"><span>17:00</span><span class="on">19:00</span><span>21:00</span></div>
-          <span class="mb-kick mt-2">Кнопки</span>
-          <div class="mb-btns"><span class="b1">Записаться</span><span class="b2">Написать в чат</span></div>
-        </div>
-      </div>
-
-      <h3 class="mb-sub">Состояния записи и оплаты</h3>
-      <div class="mb-g3">
-        <div class="mb-stt ld"><i></i>Загружаем расписание…</div>
-        <div class="mb-stt er"><i>!</i>Оплата не прошла. Деньги не списаны</div>
-        <div class="mb-stt ok"><i>✓</i>Вы записаны на 22 октября, 19:00</div>
-      </div>
-
-      <h3 class="mb-sub">Тексты интерфейса</h3>
-      <div class="mb-g3 mb-voice">
-        <div v-for="item in voice" :key="item.was">
-          <s>{{ item.was }}</s><em>{{ item.now }}</em>
-        </div>
-      </div>
-    </section>
-
-    <!-- 08 Команда -->
+    <!-- 07 Команда -->
     <section id="team" class="mb-board violet">
       <div class="mb-bh">
-        <div class="mb-bl"><span class="mb-bno">{08}</span><span class="mb-bey">Команда и запуск</span></div>
+        <div class="mb-bl"><span class="mb-bno">{07}</span><span class="mb-bey">Команда и запуск</span></div>
         <h2>От гипотез <span>до 100% пользователей</span></h2>
       </div>
       <div class="mb-pipe mb-ind">
@@ -623,16 +555,16 @@ const links = [
       </div>
     </section>
 
-    <!-- 09 Результаты -->
+    <!-- 08 Результаты -->
     <section id="results" class="mb-board dark">
       <div class="mb-bh">
-        <div class="mb-bl"><span class="mb-bno">{09}</span><span class="mb-bey">Результаты</span></div>
+        <div class="mb-bl"><span class="mb-bno">{08}</span><span class="mb-bey">Результаты</span></div>
         <h2>Вдвое быстрее до записи <span>и в полтора раза больше первых записей</span></h2>
       </div>
       <div class="mb-nums">
         <div v-for="m in metrics" :key="m.label" :class="{ key: m.key }">
           <span>{{ m.label }}</span>
-          <b class="mb-num">{{ m.value }}</b>
+          <b class="mb-num">{{ m.value }}<template v-if="m.unit">{{ ' ' }}<PixelWord :text="m.unit" /></template></b>
           <em>{{ m.note }}</em>
         </div>
       </div>
@@ -648,10 +580,10 @@ const links = [
       </div>
     </section>
 
-    <!-- 10 Дальше и выводы -->
+    <!-- 09 Дальше и выводы -->
     <section id="next" class="mb-board">
       <div class="mb-bh">
-        <div class="mb-bl"><span class="mb-bno">{10}</span><span class="mb-bey">Дальше и выводы</span></div>
+        <div class="mb-bl"><span class="mb-bno">{09}</span><span class="mb-bey">Дальше и выводы</span></div>
         <h2>Следующий фокус — <span>повторная запись</span></h2>
         <p>
           После первой консультации важно продолжение терапии: записаться к знакомому психологу в один-два тапа,
