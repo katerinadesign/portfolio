@@ -33,7 +33,7 @@ const imageWidth = computed(() => {
       v-if="concept.image"
       :image="concept.image"
       :lazy="lazy"
-      class="cover-media absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+      class="cover-media shrink-0"
       :style="{ width: `${imageWidth}%` }"
     />
     <span v-else class="rounded-full bg-white/70 px-3 py-1 text-xs font-medium text-ink/60">
