@@ -74,10 +74,11 @@ export const concepts: Concept[] = [
     platform: 'iOS, Web',
     cover: 'from-accent/60 to-white',
     image: {
-      // Экспорт секции из Figma в 2x (3010×2088) без серой обводки 2px по краю
-      src: 'images/concepts/peco-screens.jpg',
-      width: 3006,
-      height: 2084,
+      // Экспорт секции из Figma в 2x (3010×2088) без серой обводки 2px по краю,
+      // уменьшен до 2460px — вдвое больше ширины на странице, для ретины
+      src: 'images/concepts/peco-screens.webp',
+      width: 2460,
+      height: 1705,
       alt: 'Три экрана приложения PECO: тест воздуха, статус фильтра и заказ фильтра',
       // от левого края первого телефона до правого края третьего, по высоте телефонов
       content: { x: 6.59, y: 9.5, w: 86.83, h: 81 },
@@ -155,10 +156,11 @@ export const concepts: Concept[] = [
         ],
       },
       {
-        // Главная сайта quari — экспорт фрейма 1440×1070 из Figma в 2x
-        src: 'images/concepts/quari-site.jpg',
-        width: 2880,
-        height: 2140,
+        // Главная сайта quari — экспорт фрейма 1440×1070 из Figma в 2x,
+        // уменьшен до 1860px — вдвое больше ширины на странице, для ретины
+        src: 'images/concepts/quari-site.webp',
+        width: 1860,
+        height: 1382,
         alt: 'Главная страница сайта финансового сервиса Quari',
       },
     ],
